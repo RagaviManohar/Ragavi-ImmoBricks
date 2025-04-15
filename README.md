@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -14,23 +12,48 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Steps to Run Figma MCP with Cursor
+1. Clone Figma-Context-MCP(https://github.com/GLips/Figma-Context-MCP) repo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Login into Figma
+  - Go to "Help and account" -> "Account settings" -> Go to "Security" Tab
+  - Under the "Personal access token" section, click on "Generate New Token"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Create `.env` and paste the newly created personal access token in the key `FIGMA_API_KEY`
 
-## Learn More
+4. Install packages with `yarn` or `npm` or `pnpm`
 
-To learn more about Next.js, take a look at the following resources:
+5. Finally start the project, by default the application will run in port 3333
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+​The Figma-Context-MCP is an open-source Model Context Protocol (MCP) server that facilitates communication between AI-powered coding tools, such as Cursor, and Figma design files. By integrating this server, these tools can access and interpret Figma design data, enabling more accurate and efficient code generation based on design specifications. ​
 
-## Deploy on Vercel
+This integration allows AI coding agents to programmatically read and implement UI designs from Figma, streamlining the development process and reducing the need for manual coding. The server is designed to enhance the capabilities of AI copilots by providing them with detailed layout information from Figma, resulting in cleaner and more precise HTML and CSS outputs.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Cursor settings for Figma MCP
+1. Open Cursor application on your mac
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Go to "Settings" -> "Cursor Settings" -> Go to "MCP" tab
+  - Click "Add new global MCP server"
+  - This will open `mcp.json` file, paste the below snippet
+
+```bash
+  {
+    "mcpServers": {
+      "Figma MCP": {
+        "url": "http://localhost:3333/sse"
+      }
+    }
+  }
+```
+
+3. If the Figma-Context-MCP(https://github.com/GLips/Figma-Context-MCP) repo is up and running, you can able to view Connection as success in Cursor.
+
+## Example Prompt
+Create a "pixel perfect" new component as "Badge" from below figma link
+https://www.figma.com/design/9GnS5AlvbNzpIr92f6qPEI/IMMO-Design-System--2.0-?node-id=7185-147595&t=Q1gjkJ4IgYmmbAC3-4
+
+- create stories for this badge component using storybook
+- use libraries like shadcn, tailwind, lucide-react etc
+- Refer my package.json to see what are the existing libraries and try to use those alone.
+- But if you're adding any new libraries final give me the NPM command

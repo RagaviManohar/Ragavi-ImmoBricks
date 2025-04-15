@@ -12,8 +12,7 @@ const meta = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'secondary', 'destructive', 'outline'],
-      description: 'Badge variant from shadcn/ui',
+      options: ['default', 'secondary', 'destructive', 'outline', 'success', 'danger'],
     },
     children: {
       control: 'text',
@@ -29,20 +28,6 @@ export const Default: Story = {
   args: {
     children: 'Default',
     variant: 'default',
-  },
-};
-
-// New badge will use direct styling from Figma design
-export const New: Story = {
-  args: {
-    children: 'New',
-  },
-};
-
-// Expired badge will use direct styling from Figma design
-export const Expired: Story = {
-  args: {
-    children: 'Expired',
   },
 };
 
@@ -64,5 +49,19 @@ export const Outline: Story = {
   args: {
     children: 'Outline',
     variant: 'outline',
+  },
+};
+
+export const Success: Story = {
+  args: {
+    children: 'New',
+    variant: 'success',
+  },
+};
+
+export const Danger: Story = {
+  args: {
+    children: 'Expired',
+    variant: 'danger',
   },
 };

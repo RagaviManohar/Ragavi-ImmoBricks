@@ -89,6 +89,10 @@
   --table-divider: #E1E4EA;
   --table-row-title: #0E121B;
   --table-row-subtitle: #525866;
+  
+  /* Checkbox custom styles based on Figma design */
+  --checkbox-checked-bg: #4158C3;
+  --checkbox-shadow: 0px 2px 2px 0px rgba(27,28,29,0.12);
 }
 
 .dark {
@@ -139,4 +143,17 @@
   .font-inter {
     font-family: var(--font-inter);
   }
+}
+
+/* Custom checkbox style overrides */
+.table-checkbox {
+  @apply border-[var(--table-divider)] bg-[var(--checkbox-bg)] shadow-[var(--checkbox-shadow)];
+}
+
+.table-checkbox[data-state="checked"] {
+  @apply bg-[var(--checkbox-checked-bg)] border-[var(--checkbox-checked-bg)] text-[var(white)];
+}
+
+.table-checkbox[data-state="indeterminate"] {
+  @apply bg-white border-[var(--checkbox-checked-bg)] text-[var(--checkbox-checked-bg)];
 }

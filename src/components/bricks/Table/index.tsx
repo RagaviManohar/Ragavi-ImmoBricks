@@ -11,7 +11,6 @@ import {
   getSortedRowModel,
   useReactTable,
   Row,
-  // Header,
 } from "@tanstack/react-table";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -140,6 +139,7 @@ export function Table<TData>({
       // Row checkbox
       return (
         <Checkbox
+          className="table-checkbox"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -149,6 +149,7 @@ export function Table<TData>({
       // Header checkbox
       return (
         <Checkbox
+          className="table-checkbox"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
@@ -175,12 +176,12 @@ export function Table<TData>({
                 {headerGroup.headers.map((header) => {
                   // Check if this column has explicit enableSorting property
                   const columnDef = header.column.columnDef as BricksColumnDef<TData>;
-                  const isExplicitlySortable = columnDef.enableSorting === true;
+
                   // Also use TanStack's built-in API
                   const canSort = header.column.getCanSort();
                   
                   // Show sort controls if either condition is true
-                  const showSortControls = isExplicitlySortable || canSort;
+                  const showSortControls = columnDef.enableSorting || canSort;
 
                   // Current sort direction
                   const sortDirection = header.column.getIsSorted();

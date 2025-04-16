@@ -99,25 +99,28 @@ export function Sidebar({
   return (
     <SidebarProvider open={open} onOpenChange={handleOpenChange}>
       <div 
-        className="flex h-screen "
+        className="flex h-screen"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <UISidebar 
           collapsible="icon"
-          className="border-r border-[#E1E4EA] shadow-sm"
+          className="border-r border-[#E1E4EA] bg-white shadow-sm"
           variant="sidebar"
           style={{ 
             width: open ? "260px" : "80px",
             transition: "width 200ms ease-in-out"
           }}
         >
-          <SidebarHeader className="flex h-[80px] items-center justify-between px-5 py-5">
+          <SidebarHeader className={cn(
+            "flex items-center",
+            open ? "h-16 px-6 py-4 justify-between" : "h-[56px] justify-center py-3"
+          )}>
             <div className={cn(
-              "flex items-center w-full h-full gap-3 justify-start",
+              "flex items-center h-full gap-3",
+              open ? "w-full justify-start" : "justify-center"
             )}>
-              <div className="w-10 h-full flex items-center justify-center">
-                {/* TODO: Get the Immo SVG Logo from the design system */}
+              <div className="w-8 h-full flex items-center justify-center flex-shrink-0">
                 <Image
                   src="/icons/immo-logo-1.svg"
                   alt="Immo Logo"
@@ -127,43 +130,57 @@ export function Sidebar({
               </div>
               {open && (
                 <div className="w-full">
-                  <TitleWithSubText title={header.title} subText={header.description} />
+                  <TitleWithSubText 
+                    title={header.title} 
+                    subText={header.description}
+                    titleClassName="text-base font-semibold"
+                    subTextClassName="text-[#757A85]"
+                  />
                 </div>
               )}
             </div>
           </SidebarHeader>
 
-          <SidebarContent className="px-5 py-4">
-            <SidebarMenu className="flex flex-col gap-1">
+          <SidebarContent className={cn(
+            open ? "mt-2 px-3" : "pt-6 pb-0 flex flex-col items-center"
+          )}>
+            <SidebarMenu className={cn(
+              "flex flex-col space-y-1 w-full",
+              // open ? "space-y-1 w-full" : "space-y-4 items-center w-full"
+              !open && "items-center"
+            )}>
               {mainNavItems.map((item, index) => (
-                <SidebarMenuItem key={index}>
-                  <Link href={item.href} className="w-full">
+                <SidebarMenuItem key={index} className={cn(!open && "w-full flex justify-center h-8")}>
+                  <Link href={item.href} className={cn("w-full", !open && "flex justify-center")}>
                     <SidebarMenuButton
                       isActive={item.isActive}
                       className={cn(
-                        "w-full justify-start gap-2 rounded-lg",
-                        open ? "px-3 py-2" : "justify-center py-2",
-                        item.isActive && "bg-[#F8F9FA]"
+                        "rounded-md",
+                        open ? "w-full justify-start px-3 py-2.5" : "w-6 h-6 p-0 flex items-center justify-center",
+                        item.isActive ? "bg-[#F8F9FA]" : "hover:bg-[#F8F9FA]/50"
                       )}
                       tooltip={!open ? item.title : undefined}
                     >
-                      {/* <div className="w-10 h-5 py-2 flex items-center justify-center"> */}
+                      <div className={cn(
+                        "flex items-center justify-center",
+                        open ? "w-6 flex-shrink-0" : "w-5 h-5"
+                      )}>
                         <item.icon className={cn(
-                          "h-5 w-5 ", 
+                          open ? "h-5 w-5" : "h-4 w-4", 
                           item.isActive ? "text-[#0E121B]" : "text-[#99A0AE]"
                         )} />
-                      {/* </div> */}
+                      </div>
                       
                       {open && (
                         <span className={cn(
-                          "text-sm font-medium",
+                          "ml-3 text-sm font-medium",
                           item.isActive ? "text-[#0E121B]" : "text-[#525866]"
                         )}>
                           {item.title}
                         </span>
                       )}
-                      {open && item.isActive && (
-                        <div className="absolute -left-[20px] top-2 h-[24px] w-1 rounded-r-md bg-[#E1E4EA]" />
+                      {item.isActive && (
+                        <div className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-sm bg-[#525866]" />
                       )}
                     </SidebarMenuButton>
                   </Link>
@@ -171,23 +188,39 @@ export function Sidebar({
               ))}
             </SidebarMenu>
             
-            {/* TODO: Tailwind css style sheet should be created for having the theme colors */}
-            <Separator color="#E1E4EA" />
+            <div className={cn(
+              open ? "my-2 w-full" : "w-10 my-4"
+            )}>
+              <Separator color="#E1E4EA" />
+            </div>
             
-            <SidebarMenu className="flex flex-col gap-1">
+            <SidebarMenu className={cn(
+              "flex flex-col space-y-1 w-full",
+              // open ? "space-y-1 w-full" : "space-y-4 items-center w-full"
+              !open && "items-center"
+            )}>
               {bottomNavItems.map((item, index) => (
-                <SidebarMenuItem key={index}>
-                  <Link href={item.href} className="w-full">
+                <SidebarMenuItem key={index} className={cn(!open && "w-full flex justify-center h-8")}>
+                  <Link href={item.href} className={cn("w-full", !open && "flex justify-center")}>
                     <SidebarMenuButton
                       className={cn(
-                        "w-full justify-start gap-2 rounded-lg",
-                        open ? "px-3 py-2" : "justify-center py-2"
+                        "rounded-md",
+                        open ? "w-full justify-start px-3 py-2.5" : "w-6 h-6 p-0 flex items-center justify-center",
+                        "hover:bg-[#F8F9FA]/50"
                       )}
                       tooltip={!open ? item.title : undefined}
                     >
-                      <item.icon className="h-5 w-5 text-[#99A0AE]" />
+                      <div className={cn(
+                        "flex items-center justify-center",
+                        open ? "w-6 flex-shrink-0" : "w-5 h-5"
+                      )}>
+                        <item.icon className={cn(
+                          open ? "h-5 w-5" : "h-4 w-4",
+                          "text-[#99A0AE]"
+                        )} />
+                      </div>
                       {open && (
-                        <span className="text-sm font-medium text-[#525866]">
+                        <span className="ml-3 text-sm font-medium text-[#525866]">
                           {item.title}
                         </span>
                       )}
@@ -198,32 +231,44 @@ export function Sidebar({
             </SidebarMenu>
           </SidebarContent>
 
-          {/* TODO: Tailwind css style sheet should be created for having the theme colors */}
-          <div className="px-5">
-              <Separator color="#E1E4EA" />
-            </div>
-          
-          {user && (
-            <SidebarFooter className="px-5 py-4">
-              <div className={cn(
-                "flex items-center gap-3 justify-start",
+          <div className="px-3 py-2">
+            <Separator color="#E1E4EA" />
+          </div>
+
+          <div className="mt-auto">
+            {user && (
+              <SidebarFooter className={cn(
+                "py-3",
+                open ? "px-3" : "flex justify-center"
               )}>
-                <div
-                  className={cn(
-                    "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-all duration-200",
-                    user.avatarColor || "bg-[#006E6E]"
+                <div className={cn(
+                  "flex items-center",
+                  open ? "gap-3 justify-start" : "justify-center"
+                )}>
+                  <div
+                    className={cn(
+                      "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-white",
+                      user.avatarColor || "bg-[#006E6E]"
+                    )}
+                  >
+                    <span className="text-base font-medium">
+                      {user.initials}
+                    </span>
+                  </div>
+                  {open && (
+                    <div className="overflow-hidden">
+                      <TitleWithSubText 
+                        title={user.name} 
+                        subText={user.email}
+                        titleClassName="truncate"
+                        subTextClassName="truncate text-[#757A85] pt-0"
+                      />
+                    </div>
                   )}
-                >
-                  <span className="text-base font-medium text-white">
-                    {user.initials}
-                  </span>
                 </div>
-                {open && (
-                  <TitleWithSubText title={user.name} subText={user.email} />
-                )}
-              </div>
-            </SidebarFooter>
-          )}
+              </SidebarFooter>
+            )}
+          </div>
         </UISidebar>
       </div>
     </SidebarProvider>

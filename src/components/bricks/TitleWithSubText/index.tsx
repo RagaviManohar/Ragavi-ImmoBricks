@@ -1,14 +1,21 @@
 export interface TitleWithSubTextProps {
   title: string
   subText: string
+  titleClassName?: string
+  subTextClassName?: string
 }
 
 
-export const TitleWithSubText = ({ title, subText }: TitleWithSubTextProps) => {
+export const TitleWithSubText = ({ 
+  title, 
+  subText, 
+  titleClassName,
+  subTextClassName 
+}: TitleWithSubTextProps) => {
   return (
     <div className="flex flex-col justify-center">
-        <span className="text-sm font-medium leading-tight text-[#0E121B]">{title}</span>
-        <span className="text-xs pt-1 leading-tight text-[#525866]">{subText}</span>
+        <span className={`text-sm font-medium leading-tight text-[#0E121B] ${titleClassName || ''}`}>{title}</span>
+        <span className={`text-xs pt-1 leading-tight text-[#525866] ${subTextClassName || ''}`}>{subText}</span>
     </div>
   )
 }

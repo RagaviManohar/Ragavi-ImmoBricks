@@ -53,8 +53,6 @@ const SortIcon = ({ direction }: { direction: string | false }) => {
 export type BricksColumnDef<TData> = ColumnDef<TData> & {
   id: string;
   header: string;
-  // We're making these optional to accommodate action columns and others without accessors
-  accessorKey?: keyof TData | string;
   cell?: (props: { row: Row<TData> }) => React.ReactNode;
   enableSorting?: boolean;
 };
@@ -70,7 +68,7 @@ export function Table<TData>({
   data,
   columns,
   showCheckboxes = true,
-  onRowsSelected
+  onRowsSelected,
 }: TableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -97,7 +95,7 @@ export function Table<TData>({
 
   // Process column definitions to ensure enableSorting is explicitly set
   const processedColumns = React.useMemo(() => {
-    return columns.map(col => {
+    return columns.map((col) => {
       // If enableSorting is true, make sure it's explicitly set
       if (col.enableSorting) {
         return { ...col, enableSorting: true };
@@ -106,11 +104,15 @@ export function Table<TData>({
     });
   }, [columns]);
 
-  const handleSortingChange = React.useCallback((updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
-    console.log("Sort change triggered");
-    setSorting(updaterOrValue);
-  }, []);
+  const handleSortingChange = React.useCallback(
+    (updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
+      console.log("Sort change triggered");
+      setSorting(updaterOrValue);
+    },
+    []
+  );
 
+  // Create the table instance
   const table = useReactTable({
     data,
     columns: processedColumns,
@@ -129,6 +131,7 @@ export function Table<TData>({
       rowSelection,
     },
     enableSorting: true,
+    debugAll: true, // Turn on all debugging
   });
 
   // Function to render checkboxes
@@ -167,9 +170,15 @@ export function Table<TData>({
         <TableUI>
           <TableHeader className="bg-[var(--table-header-bg)]">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b border-[var(--table-divider)] hover:bg-transparent">
+              <TableRow
+                key={headerGroup.id}
+                className="border-b border-[var(--table-divider)] hover:bg-transparent"
+              >
                 {showCheckboxes && (
-                  <TableHead key="checkbox-header" className="w-12 px-3 py-2 h-auto">
+                  <TableHead
+                    key="checkbox-header"
+                    className="w-12 px-3 py-2 h-auto"
+                  >
                     {renderCheckbox()}
                   </TableHead>
                 )}
@@ -179,47 +188,44 @@ export function Table<TData>({
 
                   // Also use TanStack's built-in API
                   const canSort = header.column.getCanSort();
-                  
+
                   // Show sort controls if either condition is true
                   const showSortControls = columnDef.enableSorting || canSort;
 
                   // Current sort direction
                   const sortDirection = header.column.getIsSorted();
-                  
+
                   return (
-                    <TableHead 
-                      key={header.id} 
-                      className="p-0 h-auto"
-                    >
+                    <TableHead key={header.id} className="p-0 h-auto">
                       {header.isPlaceholder ? null : (
                         <div
                           className={`
                             px-3 py-2 font-inter text-[14px] font-normal text-[var(--table-header-text)] leading-[1.428] tracking-[-0.6%]
-                            ${showSortControls ? "cursor-pointer select-none flex items-center" : "flex"}
+                             ${
+                               showSortControls
+                                 ? "cursor-pointer select-none flex items-center"
+                                 : "flex"
+                             }
                           `}
-                          onClick={showSortControls 
-                            ? () => {
-                                console.log(`Sorting clicked for column: ${header.id}`);
-                                header.column.toggleSorting();
-                              }
-                            : undefined
-                          }
-                        >
-                          <span className="flex-grow">{flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}</span>
-                          {showSortControls && (
-                            <span 
-                              onClick={(e) => {
-                                if (showSortControls) {
-                                  e.stopPropagation();
-                                  console.log(`Icon clicked for column: ${header.id}`);
+                          onClick={
+                            showSortControls
+                              ? () => {
+                                  console.log(
+                                    `Sorting clicked for column: ${header.id}`
+                                  );
                                   header.column.toggleSorting();
                                 }
-                              }}
-                              className="ml-2 flex-shrink-0"
-                            >
+                              : undefined
+                          }
+                        >
+                          <span className="flex-grow">
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </span>
+                          {canSort && (
+                            <span className="ml-2 flex-shrink-0">
                               <SortIcon direction={sortDirection} />
                             </span>
                           )}
@@ -233,20 +239,35 @@ export function Table<TData>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, rowIndex) => (
+              table.getRowModel().rows.map((row) => (
                 <React.Fragment key={row.id}>
                   <TableRow
                     data-state={row.getIsSelected() && "selected"}
-                    className="hover:bg-transparent"
+                    className="hover:bg-transparent cursor-pointer border-b border-[var(--table-divider)] border-opacity-50"
                   >
                     {showCheckboxes && (
-                      <TableCell key="checkbox-cell" className="w-12 px-3 py-2">
+                      <TableCell
+                        key="checkbox-cell"
+                        className="w-12 px-3 py-2"
+                        onClick={(e) => e.stopPropagation()} // Prevent row click when clicking on checkbox
+                      >
                         {renderCheckbox(row)}
                       </TableCell>
                     )}
                     {row.getVisibleCells().map((cell) => {
+                      // Don't trigger row click on action cell
+                      const isActionCell = cell.column.id === "actions";
+
                       return (
-                        <TableCell key={cell.id} className="px-3 py-3 h-16">
+                        <TableCell
+                          key={cell.id}
+                          className="px-3 py-3 h-16"
+                          onClick={
+                            isActionCell
+                              ? (e) => e.stopPropagation()
+                              : undefined
+                          }
+                        >
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
@@ -255,16 +276,6 @@ export function Table<TData>({
                       );
                     })}
                   </TableRow>
-                  {rowIndex < table.getRowModel().rows.length - 1 && (
-                    <TableRow className="hover:bg-transparent">
-                      <TableCell 
-                        colSpan={columns.length + (showCheckboxes ? 1 : 0)} 
-                        className="p-0 h-[1px]"
-                      >
-                        <div className="h-[1px] w-full bg-[var(--table-divider)]"></div>
-                      </TableCell>
-                    </TableRow>
-                  )}
                 </React.Fragment>
               ))
             ) : (

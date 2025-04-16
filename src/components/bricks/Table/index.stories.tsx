@@ -79,7 +79,8 @@ const defaultData: Lead[] = [
   },
 ];
 
-const defaultColumns: BricksColumnDef<Lead>[] = [
+// Base columns without actions
+const baseColumns: BricksColumnDef<Lead>[] = [
   {
     id: "name",
     header: "Lead name",
@@ -146,35 +147,6 @@ const defaultColumns: BricksColumnDef<Lead>[] = [
       <TableRowText text={row.original.added} />
     ),
   },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }: { row: Row<Lead> }) => {
-      const lead = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(lead.id)}
-            >
-              Copy lead ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View lead</DropdownMenuItem>
-            <DropdownMenuItem>View lead details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
 ];
 
 const meta: Meta<typeof Table> = {
@@ -193,11 +165,91 @@ export const Default: Story = {
   render: () => (
     <Table<Lead>
       data={defaultData} 
-      columns={defaultColumns} 
-      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)} 
+      columns={baseColumns}
+      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
     />
   ),
   parameters: {
-    actions: { argTypesRegex: "^on.*" }
+    actions: { argTypesRegex: "^on.*" },
+    docs: {
+      description: {
+        story: 'Basic table with clickable rows. Click on a row to see details in the actions panel.'
+      }
+    }
+  }
+};
+
+// Actions column definition
+const actionsColumn: BricksColumnDef<Lead> = {
+  id: "actions",
+  header: "Actions",
+  cell: ({ row }: { row: Row<Lead> }) => {
+    const lead = row.original;
+
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem onClick={() => action("View lead")(lead)}>
+            View lead
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => action("View lead details")(lead)}>
+            View lead details
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  },
+};
+
+// Columns with actions added
+const columnsWithActions: BricksColumnDef<Lead>[] = [
+  ...baseColumns,
+  actionsColumn
+];
+
+export const WithActions: Story = {
+  render: () => (
+    <Table<Lead>
+      data={defaultData} 
+      columns={columnsWithActions}
+      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+    />
+  ),
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+    docs: {
+      description: {
+        story: 'Table with an additional actions column that provides a dropdown menu. Both rows and dropdown actions are clickable.'
+      }
+    }
+  }
+};
+
+// Empty data array for the empty state story
+const emptyData: Lead[] = [];
+
+export const EmptyState: Story = {
+  render: () => (
+    <Table<Lead>
+      data={emptyData}
+      columns={baseColumns}
+      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+    />
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Table with no data, showing the empty state message "No results."'
+      }
+    }
   }
 }; 

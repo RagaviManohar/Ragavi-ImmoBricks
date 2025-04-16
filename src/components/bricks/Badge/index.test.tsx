@@ -21,7 +21,7 @@ vi.mock('@/lib/utils', () => ({
 }));
 
 // Import after mocks
-import { BricksBadge } from '../index';
+import { BricksBadge } from './index';
 
 describe('BricksBadge', () => {
   beforeEach(() => {

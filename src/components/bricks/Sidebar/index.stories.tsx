@@ -105,7 +105,7 @@ const bottomNavItems = [
 
 const user = {
   name: 'Richard Pessall',
-  email: 'rich@immocapital.com',
+  email: 'sureshraja.selvaganapathy@immo.capital',
   initials: 'RP',
   avatarColor: 'bg-[#006E6E]',
 };

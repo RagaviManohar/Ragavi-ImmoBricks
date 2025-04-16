@@ -84,6 +84,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --table-header-bg: #F5F7FA;
+  --table-header-text: #525866;
+  --table-divider: #E1E4EA;
+  --table-row-title: #0E121B;
+  --table-row-subtitle: #525866;
 }
 
 .dark {
@@ -130,5 +135,8 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .font-inter {
+    font-family: var(--font-inter);
   }
 }

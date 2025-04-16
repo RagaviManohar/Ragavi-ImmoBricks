@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { BricksBadge } from './Badge';
+import { BricksBadge } from './index';
 
 const meta = {
   title: 'Bricks/Badge',

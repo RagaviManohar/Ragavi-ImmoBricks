@@ -2,9 +2,10 @@ import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-type CustomVariant = "success" | "danger";
+export type BricksBadgeVariant = React.ComponentProps<typeof Badge>["variant"]  |"success" | "danger";
+
 type BricksBadgeProps = Omit<React.ComponentProps<typeof Badge>, "variant"> & {
-  variant?: React.ComponentProps<typeof Badge>["variant"] | CustomVariant;
+  variant?: BricksBadgeVariant;
 };
 
 function BricksBadge({
@@ -17,9 +18,9 @@ function BricksBadge({
   const getVariantClasses = () => {
     switch (variant) {
       case "success":
-        return "border-transparent bg-success text-black";
+        return "bg-success text-success-foreground";
       case "danger":
-        return "border-transparent bg-danger text-black";
+        return "bg-danger text-danger-foreground";
       default:
         return "";
     }
@@ -30,7 +31,7 @@ function BricksBadge({
   return (
     <Badge
       className={cn(
-        "rounded-full",
+        "rounded-full border-transparent font-small",
         getVariantClasses(),
         className
       )}

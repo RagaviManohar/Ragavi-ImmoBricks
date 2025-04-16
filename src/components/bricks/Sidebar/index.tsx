@@ -142,15 +142,15 @@ export function Sidebar({
           </SidebarHeader>
 
           <SidebarContent className={cn(
-            open ? "mt-2 px-3" : "pt-6 pb-0 flex flex-col items-center"
+            "flex flex-col",
+            open ? "mt-2 px-3" : "px-0 pt-4"
           )}>
             <SidebarMenu className={cn(
-              "flex flex-col space-y-1 w-full",
-              // open ? "space-y-1 w-full" : "space-y-4 items-center w-full"
+              "flex flex-col space-y-2 w-full",
               !open && "items-center"
             )}>
               {mainNavItems.map((item, index) => (
-                <SidebarMenuItem key={index} className={cn(!open && "w-full flex justify-center h-8")}>
+                <SidebarMenuItem key={index} className={cn("w-full", !open && "flex justify-center")}>
                   <Link href={item.href} className={cn("w-full", !open && "flex justify-center")}>
                     <SidebarMenuButton
                       isActive={item.isActive}
@@ -189,18 +189,18 @@ export function Sidebar({
             </SidebarMenu>
             
             <div className={cn(
-              open ? "my-2 w-full" : "w-10 my-4"
+              "w-full my-2",
+              !open && "px-4"
             )}>
               <Separator color="#E1E4EA" />
             </div>
             
             <SidebarMenu className={cn(
-              "flex flex-col space-y-1 w-full",
-              // open ? "space-y-1 w-full" : "space-y-4 items-center w-full"
+              "flex flex-col space-y-2 w-full",
               !open && "items-center"
             )}>
               {bottomNavItems.map((item, index) => (
-                <SidebarMenuItem key={index} className={cn(!open && "w-full flex justify-center h-8")}>
+                <SidebarMenuItem key={index} className={cn("w-full", !open && "flex justify-center")}>
                   <Link href={item.href} className={cn("w-full", !open && "flex justify-center")}>
                     <SidebarMenuButton
                       className={cn(
@@ -231,11 +231,14 @@ export function Sidebar({
             </SidebarMenu>
           </SidebarContent>
 
-          <div className="px-3 py-2">
-            <Separator color="#E1E4EA" />
-          </div>
-
           <div className="mt-auto">
+            <div className={cn(
+              "py-2",
+              open ? "px-3" : "px-4"
+            )}>
+              <Separator color="#E1E4EA" />
+            </div>
+            
             {user && (
               <SidebarFooter className={cn(
                 "py-3",

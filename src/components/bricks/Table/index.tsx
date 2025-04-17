@@ -2,16 +2,22 @@ import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
   Row,
 } from "@tanstack/react-table";
+import {
+  ChevronUpIcon,
+  ChevronDownIcon,
+  ChevronsUpDownIcon,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -23,38 +29,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-// Custom sort icon component
-const SortIcon = ({ direction }: { direction: string | false }) => {
-  return (
-    <div className="ml-2 flex-shrink-0">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 17 25"
-        fill="none"
-      >
-        <path
-          d="M16.6667 8.33333L8.33333 0L0 8.33333H16.6667Z"
-          fill="var(--table-header-text)"
-          opacity={!direction || direction === "asc" ? "1" : "0.4"}
-        />
-        <path
-          d="M16.6667 16.6667L8.33333 25L0 16.6667H16.6667Z"
-          fill="var(--table-header-text)"
-          opacity={!direction || direction === "desc" ? "1" : "0.4"}
-        />
-      </svg>
-    </div>
-  );
-};
-
 // More specific column definition type
 export type BricksColumnDef<TData> = ColumnDef<TData> & {
   id: string;
   header: string;
+  accessorKey: string; // required for sorting
   cell?: (props: { row: Row<TData> }) => React.ReactNode;
-  enableSorting?: boolean;
 };
 
 interface TableProps<TData> {
@@ -70,13 +50,13 @@ export function Table<TData>({
   showCheckboxes = true,
   onRowsSelected,
 }: TableProps<TData>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   // Report selected row IDs when row selection changes
   React.useEffect(() => {
@@ -88,50 +68,24 @@ export function Table<TData>({
     }
   }, [rowSelection, data, onRowsSelected]);
 
-  // Log sorting state changes for debugging
-  React.useEffect(() => {
-    console.log("Current sorting state:", sorting);
-  }, [sorting]);
-
-  // Process column definitions to ensure enableSorting is explicitly set
-  const processedColumns = React.useMemo(() => {
-    return columns.map((col) => {
-      // If enableSorting is true, make sure it's explicitly set
-      if (col.enableSorting) {
-        return { ...col, enableSorting: true };
-      }
-      return col;
-    });
-  }, [columns]);
-
-  const handleSortingChange = React.useCallback(
-    (updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
-      console.log("Sort change triggered");
-      setSorting(updaterOrValue);
-    },
-    []
-  );
-
   // Create the table instance
   const table = useReactTable({
     data,
-    columns: processedColumns,
-    onSortingChange: handleSortingChange,
+    columns,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      sorting,
     },
-    enableSorting: true,
-    debugAll: true, // Turn on all debugging
   });
 
   // Function to render checkboxes
@@ -142,7 +96,7 @@ export function Table<TData>({
       // Row checkbox
       return (
         <Checkbox
-          className="table-checkbox"
+          className="table-checkbox cursor-pointer"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -152,7 +106,7 @@ export function Table<TData>({
       // Header checkbox
       return (
         <Checkbox
-          className="table-checkbox"
+          className="table-checkbox cursor-pointer"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
@@ -165,103 +119,88 @@ export function Table<TData>({
   };
 
   return (
-    <div className="w-full">
-      <div className="rounded-md border">
-        <TableUI>
-          <TableHeader className="bg-[var(--table-header-bg)]">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="border-b border-[var(--table-divider)] hover:bg-transparent"
-              >
-                {showCheckboxes && (
+    <div className="w-full flex flex-col gap-2">
+      <TableUI>
+        <TableHeader className="bg-gray-50 rounded-t-lg">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow
+              key={headerGroup.id}
+              className="hover:bg-transparent border-none"
+            >
+              {showCheckboxes && (
+                <TableHead
+                  key="checkbox-header"
+                  className="px-3 py-2 align-middle"
+                >
+                  {renderCheckbox()}
+                </TableHead>
+              )}
+              {headerGroup.headers.map((header) => {
+                return (
                   <TableHead
-                    key="checkbox-header"
-                    className="w-12 px-3 py-2 h-auto"
+                    key={header.id}
+                    className="p-0 h-auto align-middle"
                   >
-                    {renderCheckbox()}
-                  </TableHead>
-                )}
-                {headerGroup.headers.map((header) => {
-                  // Check if this column has explicit enableSorting property
-                  const columnDef = header.column.columnDef as BricksColumnDef<TData>;
-
-                  // Also use TanStack's built-in API
-                  const canSort = header.column.getCanSort();
-
-                  // Show sort controls if either condition is true
-                  const showSortControls = columnDef.enableSorting || canSort;
-
-                  // Current sort direction
-                  const sortDirection = header.column.getIsSorted();
-
-                  return (
-                    <TableHead key={header.id} className="p-0 h-auto">
-                      {header.isPlaceholder ? null : (
-                        <div
-                          className={`
-                            px-3 py-2 font-inter text-[14px] font-normal text-[var(--table-header-text)] leading-[1.428] tracking-[-0.6%]
-                             ${
-                               showSortControls
-                                 ? "cursor-pointer select-none flex items-center"
-                                 : "flex"
-                             }
-                          `}
-                          onClick={
-                            showSortControls
-                              ? () => {
-                                  console.log(
-                                    `Sorting clicked for column: ${header.id}`
-                                  );
-                                  header.column.toggleSorting();
-                                }
-                              : undefined
-                          }
-                        >
-                          <span className="flex-grow">
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </span>
-                          {canSort && (
-                            <span className="ml-2 flex-shrink-0">
-                              <SortIcon direction={sortDirection} />
-                            </span>
-                          )}
-                        </div>
+                    <div
+                      className={cn(
+                        "px-3 py-2 text-[var(--table-header-text)] text-sm font-normal flex items-center gap-1",
+                        header.column.getCanSort()
+                          ? "cursor-pointer select-none"
+                          : ""
                       )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <span>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </span>
+                      {header.column.getIsSorted() ? (
+                        <span className="flex items-center text-gray-600">
+                          {header.column.getIsSorted() === "asc" ? (
+                            <ChevronUpIcon className="h-4 w-4" />
+                          ) : (
+                            <ChevronDownIcon className="h-4 w-4" />
+                          )}
+                        </span>
+                      ) : header.column.getCanSort() ? (
+                        <span className="flex items-center text-gray-600">
+                          <ChevronsUpDownIcon className="h-4 w-4" />
+                        </span>
+                      ) : null}
+                    </div>
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => {
+              return (
                 <React.Fragment key={row.id}>
                   <TableRow
                     data-state={row.getIsSelected() && "selected"}
-                    className="hover:bg-transparent cursor-pointer border-b border-[var(--table-divider)] border-opacity-50"
+                    className={cn("bg-white border-none")}
                   >
                     {showCheckboxes && (
                       <TableCell
                         key="checkbox-cell"
-                        className="w-12 px-3 py-2"
-                        onClick={(e) => e.stopPropagation()} // Prevent row click when clicking on checkbox
+                        className="px-3 py-3 h-16 align-middle"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {renderCheckbox(row)}
                       </TableCell>
                     )}
                     {row.getVisibleCells().map((cell) => {
-                      // Don't trigger row click on action cell
                       const isActionCell = cell.column.id === "actions";
 
                       return (
                         <TableCell
                           key={cell.id}
-                          className="px-3 py-3 h-16"
+                          className="px-3 py-3 h-16 align-middle"
                           onClick={
                             isActionCell
                               ? (e) => e.stopPropagation()
@@ -276,21 +215,30 @@ export function Table<TData>({
                       );
                     })}
                   </TableRow>
+
+                  <TableRow className="border-none">
+                    <TableCell
+                      colSpan={columns.length + (showCheckboxes ? 1 : 0)}
+                      className="p-0 h-0"
+                    >
+                      <div className="h-[1.5px] bg-gray-200 w-full"></div>
+                    </TableCell>
+                  </TableRow>
                 </React.Fragment>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length + (showCheckboxes ? 1 : 0)}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </TableUI>
-      </div>
+              );
+            })
+          ) : (
+            <TableRow className="bg-white rounded-b-lg border-none border-gray-200 border-b-[1.5px]">
+              <TableCell
+                colSpan={columns.length + (showCheckboxes ? 1 : 0)}
+                className="h-24 text-center"
+              >
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </TableUI>
     </div>
   );
 }

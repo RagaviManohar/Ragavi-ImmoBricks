@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { Table, BricksColumnDef } from "@/components/bricks/Table";
 import { BricksBadge } from "@/components/bricks/Badge";
-import { TableRowText } from "@/components/bricks/TableRowText";
+import { Text } from "@/components/bricks/Text";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,53 +29,53 @@ export type Lead = {
 const defaultData: Lead[] = [
   {
     id: "4170",
-    name: "Hafecity Komplex",
-    location: "Hamburg",
+    name: "Riverside Complex",
+    location: "Berlin",
     stage: "New",
     market: "Germany",
-    marketSubtext: "subtext?",
-    units: 120,
-    added: "Jul 26, 2025",
+    marketSubtext: "Primary Market",
+    units: 150,
+    added: "Aug 1, 2024",
   },
   {
     id: "4171",
-    name: "Hafecity Komplex",
-    location: "Hamburg",
+    name: "Ocean View Apartments",
+    location: "Lisbon",
     stage: "Expired",
-    market: "Germany",
-    marketSubtext: "subtext?",
-    units: 120,
-    added: "Jul 26, 2025",
+    market: "Portugal",
+    marketSubtext: "Coastal Region",
+    units: 85,
+    added: "Sep 15, 2024",
   },
   {
     id: "4172",
-    name: "Hafecity Komplex",
-    location: "Hamburg", 
-    stage: "New",
-    market: "Germany",
-    marketSubtext: "subtext?",
-    units: 120,
-    added: "Jul 26, 2025",
+    name: "Mountain Ridge Villas",
+    location: "Zurich", 
+    stage: "Processing",
+    market: "Switzerland",
+    marketSubtext: "Alpine Area",
+    units: 60,
+    added: "Oct 20, 2024",
   },
   {
     id: "4173",
-    name: "Hafecity Komplex",
-    location: "Hamburg",
+    name: "Downtown Lofts",
+    location: "Paris",
     stage: "New",
-    market: "Germany",
-    marketSubtext: "subtext?",
-    units: 120,
-    added: "Jul 26, 2025",
+    market: "France",
+    marketSubtext: "City Center",
+    units: 210,
+    added: "Nov 5, 2024",
   },
   {
     id: "4174",
-    name: "Hafecity Komplex",
-    location: "Hamburg",
+    name: "Sunset Estates",
+    location: "Madrid",
     stage: "New",
-    market: "Germany",
-    marketSubtext: "subtext?",
-    units: 120,
-    added: "Jul 26, 2025",
+    market: "Spain",
+    marketSubtext: "Suburban Zone",
+    units: 110,
+    added: "Dec 10, 2024",
   },
 ];
 
@@ -83,22 +83,25 @@ const defaultData: Lead[] = [
 const baseColumns: BricksColumnDef<Lead>[] = [
   {
     id: "name",
+    accessorKey: "name",
     header: "Lead name",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <TableRowText subText={row.original.location} text={row.original.name} />
+      <Text text={row.original.name} weight="medium" subText={row.original.location} />
     ),
   },
   {
     id: "leadId",
+    accessorKey: "id",
     header: "Lead ID",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <TableRowText text={`#${row.original.id}`} />
+      <Text text={`#${row.original.id}`} />
     ),
   },
   {
     id: "stage",
+    accessorKey: "stage",
     header: "Stage",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => {
@@ -125,26 +128,29 @@ const baseColumns: BricksColumnDef<Lead>[] = [
   },
   {
     id: "market",
+    accessorKey: "market",
     header: "Markets",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <TableRowText subText={row.original.marketSubtext} text={row.original.market} />
+      <Text text={row.original.market} subText={row.original.marketSubtext} />
     ),
   },
   {
     id: "units",
+    accessorKey: "units",
     header: "Units",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <TableRowText text={String(row.original.units)} />
+      <Text text={String(row.original.units)} />
     ),
   },
   {
     id: "added",
+    accessorKey: "added",
     header: "Added",
     enableSorting: false,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <TableRowText text={row.original.added} />
+      <Text text={row.original.added} />
     ),
   },
 ];
@@ -179,9 +185,30 @@ export const Default: Story = {
   }
 };
 
+// New story without checkboxes enabled
+export const WithoutCheckboxes: Story = {
+  render: () => (
+    <Table<Lead>
+      data={defaultData} 
+      columns={baseColumns}
+      showCheckboxes={false} // Disable checkboxes
+      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+    />
+  ),
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+    docs: {
+      description: {
+        story: 'Table without checkboxes disabled for row selection.'
+      }
+    }
+  }
+};
+
 // Actions column definition
 const actionsColumn: BricksColumnDef<Lead> = {
   id: "actions",
+  accessorKey: "actions",
   header: "Actions",
   cell: ({ row }: { row: Row<Lead> }) => {
     const lead = row.original;

@@ -31,11 +31,11 @@ function BricksBadge({
   return (
     <Badge
       className={cn(
-        "rounded-full border-transparent font-small",
+        "rounded-full border-transparent px-2 py-0.5 text-xs font-medium",
         getVariantClasses(),
         className
       )}
-      // Only pass variant to Badge if it's not a custom variant
+      // Pass variant only if it's a standard Shadcn variant
       variant={isCustomVariant ? undefined : variant as React.ComponentProps<typeof Badge>["variant"]}
       {...props}
     >

@@ -122,9 +122,10 @@ export function Table<TData>({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <div className="relative overflow-x-auto max-h-[600px] overflow-y-auto">
-        <TableUI className="relative">
-          <TableHeader className="bg-gray-50 sticky top-0 z-20 rounded-t-lg">
+      <TableUI className="w-full overflow-hidden">
+        {/* Fixed header table */}
+        <div className="sticky top-0 z-30 w-full bg-gray-50">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
@@ -179,6 +180,10 @@ export function Table<TData>({
               </TableRow>
             ))}
           </TableHeader>
+        </div>
+
+        {/* Scrollable body table */}
+        <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
@@ -241,8 +246,8 @@ export function Table<TData>({
               </TableRow>
             )}
           </TableBody>
-        </TableUI>
-      </div>
+        </div>
+      </TableUI>
     </div>
   );
 }

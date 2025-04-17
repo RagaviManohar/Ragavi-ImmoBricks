@@ -34,7 +34,7 @@ describe('BricksBadge', () => {
     const badge = screen.getByTestId('mocked-badge');
     expect(badge).toBeDefined();
     expect(badge.textContent).toBe('Default');
-    expect(badge.className).toContain('rounded-full border-transparent font-small');
+    expect(badge.className).toContain('rounded-full border-transparent px-2 py-0.5 text-xs font-medium');
     expect(badge.getAttribute('data-variant')).toBeNull();
   });
 

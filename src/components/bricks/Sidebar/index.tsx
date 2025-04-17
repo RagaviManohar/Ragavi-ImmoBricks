@@ -94,7 +94,7 @@ export function Sidebar({
       >
         <UISidebar 
           collapsible="icon"
-          className="border-r border-[#E1E4EA] bg-white shadow-sm"
+          className="border-r border-neutral-200 bg-white shadow-sm "
           variant="sidebar"
           style={{ 
             width: open ? "300px" : "80px",
@@ -102,7 +102,7 @@ export function Sidebar({
           }}
         >
           <SidebarHeader className={cn(
-            "flex items-center py-4 h-20",
+            "flex items-center py-4 h-20 bg-white",
             open ? "px-6 justify-between" : "justify-center"
           )}>
             <div className={cn(
@@ -123,7 +123,7 @@ export function Sidebar({
                     title={header.title} 
                     subText={header.description}
                     titleClassName="text-base font-semibold"
-                    subTextClassName="text-[#757A85]"
+                    subTextClassName="text-neutral-600"
                   />
                 </div>
               )}
@@ -131,25 +131,25 @@ export function Sidebar({
           </SidebarHeader>
          
           <SidebarContent className={cn(
-            "flex flex-col pt-5",
+            "flex flex-col pt-5 bg-white",
           )}>
             <SidebarNavItems items={mainNavItems} open={open} />
 
             <div className={cn("py-2", open ? "px-3" : "px-4")}>
-              <Separator color="#E1E4EA" />
+              <Separator color="neutral-200" />
             </div>
             
             <SidebarNavItems items={bottomNavItems} open={open} />
           </SidebarContent>
 
           <div className={cn("py-2", open ? "px-3" : "px-4")}>
-            <Separator color="#E1E4EA" />
+            <Separator color="neutral-200" />
           </div>
 
           <div className="mt-auto">
             {user && (
               <SidebarFooter className={cn(
-                "py-3",
+                "py-3 bg-white",
                 open ? "px-6" : "flex justify-center"
               )}>
                 <div className={cn(
@@ -171,7 +171,7 @@ export function Sidebar({
                       <TitleWithSubText 
                         title={user.name} 
                         subText={user.email}
-                        subTextClassName="text-[#757A85] pt-0"
+                        subTextClassName="text-neutral-600 pt-0"
                       />
                     </div>
                   )}

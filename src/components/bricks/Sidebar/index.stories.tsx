@@ -104,9 +104,9 @@ const bottomNavItems = [
 ];
 
 const user = {
-  name: 'Richard Pessall',
+  name: 'Sureshraja Selvaganapathy',
   email: 'sureshraja.selvaganapathy@immo.capital',
-  initials: 'RP',
+  initials: 'SS',
   avatarColor: 'bg-[#006E6E]',
 };
 

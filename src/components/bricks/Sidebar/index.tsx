@@ -98,7 +98,7 @@ export function Sidebar({
           className="border-r border-[#E1E4EA] bg-white shadow-sm"
           variant="sidebar"
           style={{ 
-            width: open ? "260px" : "80px",
+            width: open ? "300px" : "80px",
             transition: "width 200ms ease-in-out"
           }}
         >
@@ -110,16 +110,16 @@ export function Sidebar({
               "flex items-center h-full gap-3",
               open ? "w-full justify-start" : "justify-center"
             )}>
-              <div className="w-8 h-full flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-full flex items-center justify-center flex-shrink-0">
                 <Image
                   src="/icons/immo-logo-1.svg"
                   alt="Immo Logo"
-                  width={24}
-                  height={24}
+                  width={40}
+                  height={40}
                 />
               </div>
               {open && (
-                <div className="w-full">
+                <div className="w-full max-h-[50px]">
                   <TitleWithSubText 
                     title={header.title} 
                     subText={header.description}
@@ -175,12 +175,11 @@ export function Sidebar({
                     </span>
                   </div>
                   {open && (
-                    <div className="overflow-hidden">
+                    <div className="overflow-hidden w-full max-h-[50px]">
                       <TitleWithSubText 
                         title={user.name} 
                         subText={user.email}
-                        titleClassName="truncate"
-                        subTextClassName="truncate text-[#757A85] pt-0"
+                        subTextClassName="text-[#757A85] pt-0"
                       />
                     </div>
                   )}

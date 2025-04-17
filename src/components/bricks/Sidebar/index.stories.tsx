@@ -115,10 +115,6 @@ const header = {
   description: 'Proptech',
 };
 
-const logo = {
-  altText: 'Immo Logo',
-  path: '/icons/immo-logo-1.svg',
-};
 
 export const Open: Story = {
   args: {

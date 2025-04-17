@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 
@@ -91,6 +91,7 @@ export function Sidebar({
         className="flex h-screen"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        data-testid="sidebar-wrapper"
       >
         <UISidebar 
           collapsible="icon"
@@ -142,7 +143,7 @@ export function Sidebar({
             <SidebarNavItems items={bottomNavItems} open={open} />
           </SidebarContent>
 
-          <div className={cn("py-2", open ? "px-3" : "px-4")}>
+          <div className={cn("py-2 bg-white", open ? "px-3" : "px-4")}>
             <Separator color="neutral-200" />
           </div>
 

@@ -1,3 +1,5 @@
+import React from 'react'
+
 export interface TitleWithSubTextProps {
   title: string
   subText: string

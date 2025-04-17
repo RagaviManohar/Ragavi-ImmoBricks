@@ -18,13 +18,12 @@ export interface SidebarProps {
   isOpen?: boolean
   onOpenChange?: (open: boolean) => void
   header:{
-    // logo: should be included with the SVG type or image
     title: string
     description: string
   }
   mainNavItems?: NavItem[]
   bottomNavItems?: NavItem[]
-  user?: {
+  user: {
     name: string
     email: string
     initials: string
@@ -130,26 +129,20 @@ export function Sidebar({
               )}
             </div>
           </SidebarHeader>
-
+         
           <SidebarContent className={cn(
             "flex flex-col pt-5",
           )}>
             <SidebarNavItems items={mainNavItems} open={open} />
-            
-            <div className={cn(
-              "w-full my-2",
-              !open && "px-4"
-            )}>
+
+            <div className={cn("py-2", open ? "px-3" : "px-4")}>
               <Separator color="#E1E4EA" />
             </div>
             
             <SidebarNavItems items={bottomNavItems} open={open} />
           </SidebarContent>
 
-          <div className={cn(
-            "py-2",
-            open ? "px-3" : "px-4"
-          )}>
+          <div className={cn("py-2", open ? "px-3" : "px-4")}>
             <Separator color="#E1E4EA" />
           </div>
 

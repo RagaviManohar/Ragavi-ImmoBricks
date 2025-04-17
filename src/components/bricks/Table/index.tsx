@@ -42,6 +42,7 @@ interface TableProps<TData> {
   columns: BricksColumnDef<TData>[];
   showCheckboxes?: boolean;
   onRowsSelected?: (selectedRowIds: string[]) => void;
+  emptyMessage?: string;
 }
 
 export function Table<TData>({
@@ -49,6 +50,7 @@ export function Table<TData>({
   columns,
   showCheckboxes = true,
   onRowsSelected,
+  emptyMessage = "No results.",
 }: TableProps<TData>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -120,125 +122,127 @@ export function Table<TData>({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <TableUI>
-        <TableHeader className="bg-gray-50 rounded-t-lg">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="hover:bg-transparent border-none"
-            >
-              {showCheckboxes && (
-                <TableHead
-                  key="checkbox-header"
-                  className="px-3 py-2 align-middle"
-                >
-                  {renderCheckbox()}
-                </TableHead>
-              )}
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead
-                    key={header.id}
-                    className="p-0 h-auto align-middle"
-                  >
-                    <div
-                      className={cn(
-                        "px-3 py-2 text-[var(--table-header-text)] text-sm font-normal flex items-center gap-1",
-                        header.column.getCanSort()
-                          ? "cursor-pointer select-none"
-                          : ""
-                      )}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      <span>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </span>
-                      {header.column.getIsSorted() ? (
-                        <span className="flex items-center text-gray-600">
-                          {header.column.getIsSorted() === "asc" ? (
-                            <ChevronUpIcon className="h-4 w-4" />
-                          ) : (
-                            <ChevronDownIcon className="h-4 w-4" />
-                          )}
-                        </span>
-                      ) : header.column.getCanSort() ? (
-                        <span className="flex items-center text-gray-600">
-                          <ChevronsUpDownIcon className="h-4 w-4" />
-                        </span>
-                      ) : null}
-                    </div>
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => {
-              return (
-                <React.Fragment key={row.id}>
-                  <TableRow
-                    data-state={row.getIsSelected() && "selected"}
-                    className={cn("bg-white border-none")}
-                  >
-                    {showCheckboxes && (
-                      <TableCell
-                        key="checkbox-cell"
-                        className="px-3 py-3 h-16 align-middle"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {renderCheckbox(row)}
-                      </TableCell>
-                    )}
-                    {row.getVisibleCells().map((cell) => {
-                      const isActionCell = cell.column.id === "actions";
-
-                      return (
-                        <TableCell
-                          key={cell.id}
-                          className="px-3 py-3 h-16 align-middle"
-                          onClick={
-                            isActionCell
-                              ? (e) => e.stopPropagation()
-                              : undefined
-                          }
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-
-                  <TableRow className="border-none">
-                    <TableCell
-                      colSpan={columns.length + (showCheckboxes ? 1 : 0)}
-                      className="p-0 h-0"
-                    >
-                      <div className="h-[1.5px] bg-gray-200 w-full"></div>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              );
-            })
-          ) : (
-            <TableRow className="bg-white rounded-b-lg border-none border-gray-200 border-b-[1.5px]">
-              <TableCell
-                colSpan={columns.length + (showCheckboxes ? 1 : 0)}
-                className="h-24 text-center"
+      <div className="relative overflow-x-auto max-h-[600px] overflow-y-auto">
+        <TableUI className="relative">
+          <TableHeader className="bg-gray-50 sticky top-0 z-20 rounded-t-lg">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="hover:bg-transparent border-none"
               >
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </TableUI>
+                {showCheckboxes && (
+                  <TableHead
+                    key="checkbox-header"
+                    className="px-3 py-2 align-middle bg-gray-50"
+                  >
+                    {renderCheckbox()}
+                  </TableHead>
+                )}
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className="p-0 h-auto align-middle bg-gray-50"
+                    >
+                      <div
+                        className={cn(
+                          "px-3 py-2 text-[var(--table-header-text)] text-sm font-normal flex items-center gap-1",
+                          header.column.getCanSort()
+                            ? "cursor-pointer select-none"
+                            : ""
+                        )}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <span>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </span>
+                        {header.column.getIsSorted() ? (
+                          <span className="flex items-center text-gray-600">
+                            {header.column.getIsSorted() === "asc" ? (
+                              <ChevronUpIcon className="h-4 w-4" />
+                            ) : (
+                              <ChevronDownIcon className="h-4 w-4" />
+                            )}
+                          </span>
+                        ) : header.column.getCanSort() ? (
+                          <span className="flex items-center text-gray-600">
+                            <ChevronsUpDownIcon className="h-4 w-4" />
+                          </span>
+                        ) : null}
+                      </div>
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <React.Fragment key={row.id}>
+                    <TableRow
+                      data-state={row.getIsSelected() && "selected"}
+                      className={cn("bg-white border-none")}
+                    >
+                      {showCheckboxes && (
+                        <TableCell
+                          key="checkbox-cell"
+                          className="px-3 py-3 h-16 align-middle"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {renderCheckbox(row)}
+                        </TableCell>
+                      )}
+                      {row.getVisibleCells().map((cell) => {
+                        const isActionCell = cell.column.id === "actions";
+
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className="px-3 py-3 h-16 align-middle"
+                            onClick={
+                              isActionCell
+                                ? (e) => e.stopPropagation()
+                                : undefined
+                            }
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+
+                    <TableRow className="border-none">
+                      <TableCell
+                        colSpan={columns.length + (showCheckboxes ? 1 : 0)}
+                        className="p-0 h-0"
+                      >
+                        <div className="h-[1.5px] bg-gray-200 w-full"></div>
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
+                );
+              })
+            ) : (
+              <TableRow className="bg-white rounded-b-lg border-none border-gray-200 border-b-[1.5px]">
+                <TableCell
+                  colSpan={columns.length + (showCheckboxes ? 1 : 0)}
+                  className="h-24 text-center"
+                >
+                  {emptyMessage}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </TableUI>
+      </div>
     </div>
   );
 }

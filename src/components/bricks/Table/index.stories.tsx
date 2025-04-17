@@ -199,7 +199,7 @@ export const WithoutCheckboxes: Story = {
     actions: { argTypesRegex: "^on.*" },
     docs: {
       description: {
-        story: 'Table without checkboxes disabled for row selection.'
+        story: 'Table without checkboxes.'
       }
     }
   }
@@ -255,7 +255,7 @@ export const WithActions: Story = {
     actions: { argTypesRegex: "^on.*" },
     docs: {
       description: {
-        story: 'Table with an additional actions column that provides a dropdown menu. Both rows and dropdown actions are clickable.'
+        story: 'Table with an additional actions column that provides a dropdown menu.'
       }
     }
   }
@@ -279,4 +279,93 @@ export const EmptyState: Story = {
       }
     }
   }
-}; 
+};
+
+// Create a large dataset for scroll demonstration
+const largeDataset: Lead[] = [
+  ...defaultData,
+  ...defaultData.map(item => ({ ...item, id: `5${item.id.substring(1)}` })),
+  ...defaultData.map(item => ({ ...item, id: `6${item.id.substring(1)}` })),
+  ...defaultData.map(item => ({ ...item, id: `7${item.id.substring(1)}` })),
+  ...defaultData.map(item => ({ ...item, id: `8${item.id.substring(1)}` })),
+];
+
+export const WithVerticalScroll: Story = {
+  render: () => (
+    <div style={{ width: '100%', maxWidth: '900px' }}>
+      <Table<Lead>
+        data={largeDataset}
+        columns={baseColumns}
+        onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Table with many records to demonstrate vertical scrolling behavior'
+      }
+    }
+  }
+};
+
+// Create wider columns for horizontal scroll
+const wideColumns: BricksColumnDef<Lead>[] = [
+  ...baseColumns,
+  {
+    id: "description",
+    accessorKey: "id", // Reusing ID just for demo
+    header: "Very Long Description Column",
+    enableSorting: true,
+    cell: ({ row }: { row: Row<Lead> }) => (
+      <Text text={`This is a very long description for ${row.original.name} property located in ${row.original.location} with ${row.original.units} units available.`} />
+    ),
+  },
+  {
+    id: "extraDetails",
+    accessorKey: "id", // Reusing ID just for demo
+    header: "Additional Property Details",
+    enableSorting: true,
+    cell: ({ row }: { row: Row<Lead> }) => (
+      <Text text={`Extra information for property #${row.original.id} in the ${row.original.marketSubtext || 'Standard'} category`} />
+    ),
+  },
+  actionsColumn
+];
+
+export const WithHorizontalAndVerticalScroll: Story = {
+  render: () => (
+    <div style={{ width: '100%', maxWidth: '700px' }}>
+      <Table<Lead>
+        data={largeDataset}
+        columns={wideColumns}
+        onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Table with many records and wide columns to demonstrate both horizontal and vertical scrolling'
+      }
+    }
+  }
+};
+
+export const CustomEmptyMessage: Story = {
+  render: () => (
+    <Table<Lead>
+      data={emptyData}
+      columns={baseColumns}
+      emptyMessage="No properties found. Try adjusting your filters."
+      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+    />
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Table with custom empty state message'
+      }
+    }
+  }
+};

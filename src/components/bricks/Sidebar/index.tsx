@@ -133,7 +133,6 @@ export function Sidebar({
 
           <SidebarContent className={cn(
             "flex flex-col pt-5",
-            open ? "px-3" : "px-0"
           )}>
             <SidebarNavItems items={mainNavItems} open={open} />
             

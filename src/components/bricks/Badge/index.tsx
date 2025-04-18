@@ -1,19 +1,19 @@
 import * as React from "react";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { Badge  as ShadcnBadge } from "@/components/shadcn/ui/badge";
+import { cn } from "@/components/shadcn/lib/utils";
 
-export type BricksBadgeVariant = React.ComponentProps<typeof Badge>["variant"]  |"success" | "danger";
+export type BadgeVariant = React.ComponentProps<typeof ShadcnBadge>["variant"]  |"success" | "danger";
 
-type BricksBadgeProps = Omit<React.ComponentProps<typeof Badge>, "variant"> & {
-  variant?: BricksBadgeVariant;
+type BadgeProps = Omit<React.ComponentProps<typeof ShadcnBadge>, "variant"> & {
+  variant?: BadgeVariant;
 };
 
-function BricksBadge({
+export function Badge({
   className,
   children,
   variant,
   ...props
-}: BricksBadgeProps) {
+}: BadgeProps) {
   // Use Tailwind's utility classes that reference theme variables
   const getVariantClasses = () => {
     switch (variant) {
@@ -29,19 +29,17 @@ function BricksBadge({
   const isCustomVariant = variant === "success" || variant === "danger";
   
   return (
-    <Badge
+    <ShadcnBadge
       className={cn(
         "rounded-full border-transparent px-2 py-0.5 text-xs font-medium",
         getVariantClasses(),
         className
       )}
       // Pass variant only if it's a standard Shadcn variant
-      variant={isCustomVariant ? undefined : variant as React.ComponentProps<typeof Badge>["variant"]}
+      variant={isCustomVariant ? undefined : variant as React.ComponentProps<typeof ShadcnBadge>["variant"]}
       {...props}
     >
       {children}
-    </Badge>
+    </ShadcnBadge>
   );
 }
-
-export { BricksBadge };

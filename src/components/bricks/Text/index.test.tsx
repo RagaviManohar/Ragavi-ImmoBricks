@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { Text } from './index';
+import { Text } from '@/components/bricks/Text';
 
 // Mock the cn utility function
 vi.mock('@/lib/utils', () => ({

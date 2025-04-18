@@ -17,17 +17,17 @@ import {
   ChevronDownIcon,
   ChevronsUpDownIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/components/shadcn/lib/utils";
 
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/shadcn/ui/checkbox";
 import {
-  Table as TableUI,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Table as ShadcnTable,
+  TableBody as ShadcnTableBody,
+  TableCell as ShadcnTableCell,
+  TableHead as ShadcnTableHead,
+  TableHeader as ShadcnTableHeader,
+  TableRow as ShadcnTableRow,
+} from "@/components/shadcn/ui/table";
 
 // More specific column definition type
 export type BricksColumnDef<TData> = ColumnDef<TData> & {
@@ -122,26 +122,26 @@ export function Table<TData>({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <TableUI className="w-full overflow-hidden">
+      <ShadcnTable className="w-full overflow-hidden">
         {/* Fixed header table */}
         <div className="sticky top-0 z-30 w-full bg-neutral-50">
-          <TableHeader>
+          <ShadcnTableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
+              <ShadcnTableRow
                 key={headerGroup.id}
                 className="hover:bg-transparent border-none"
               >
                 {showCheckboxes && (
-                  <TableHead
+                  <ShadcnTableHead
                     key="checkbox-header"
                     className="px-3 py-2 align-middle bg-neutral-50"
                   >
                     {renderCheckbox()}
-                  </TableHead>
+                  </ShadcnTableHead>
                 )}
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead
+                    <ShadcnTableHead
                       key={header.id}
                       className="p-0 h-auto align-middle bg-neutral-50"
                     >
@@ -174,39 +174,39 @@ export function Table<TData>({
                           </span>
                         ) : null}
                       </div>
-                    </TableHead>
+                    </ShadcnTableHead>
                   );
                 })}
-              </TableRow>
+              </ShadcnTableRow>
             ))}
-          </TableHeader>
+          </ShadcnTableHeader>
         </div>
 
         {/* Scrollable body table */}
         <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
-          <TableBody>
+          <ShadcnTableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => {
                 return (
                   <React.Fragment key={row.id}>
-                    <TableRow
+                    <ShadcnTableRow
                       data-state={row.getIsSelected() && "selected"}
                       className={cn("bg-neutral-0 border-none")}
                     >
                       {showCheckboxes && (
-                        <TableCell
+                        <ShadcnTableCell
                           key="checkbox-cell"
                           className="px-3 py-3 h-16 align-middle"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {renderCheckbox(row)}
-                        </TableCell>
+                        </ShadcnTableCell>
                       )}
                       {row.getVisibleCells().map((cell) => {
                         const isActionCell = cell.column.id === "actions";
 
                         return (
-                          <TableCell
+                          <ShadcnTableCell
                             key={cell.id}
                             className="px-3 py-3 h-16 align-middle"
                             onClick={
@@ -219,35 +219,35 @@ export function Table<TData>({
                               cell.column.columnDef.cell,
                               cell.getContext()
                             )}
-                          </TableCell>
+                          </ShadcnTableCell>
                         );
                       })}
-                    </TableRow>
+                    </ShadcnTableRow>
 
-                    <TableRow className="border-none">
-                      <TableCell
+                    <ShadcnTableRow className="border-none">
+                      <ShadcnTableCell
                         colSpan={columns.length + (showCheckboxes ? 1 : 0)}
                         className="p-0 h-0"
                       >
                         <div className="h-[1.5px] bg-neutral-200 w-full"></div>
-                      </TableCell>
-                    </TableRow>
+                      </ShadcnTableCell>
+                    </ShadcnTableRow>
                   </React.Fragment>
                 );
               })
             ) : (
-              <TableRow className="bg-neutral-0 rounded-b-lg border-none border-neutral-200 border-b-[1.5px]">
-                <TableCell
+              <ShadcnTableRow className="bg-neutral-0 rounded-b-lg border-none border-neutral-200 border-b-[1.5px]">
+                <ShadcnTableCell
                   colSpan={columns.length + (showCheckboxes ? 1 : 0)}
                   className="h-24 text-center"
                 >
                   {emptyMessage}
-                </TableCell>
-              </TableRow>
+                </ShadcnTableCell>
+              </ShadcnTableRow>
             )}
-          </TableBody>
+          </ShadcnTableBody>
         </div>
-      </TableUI>
+      </ShadcnTable>
     </div>
   );
 }

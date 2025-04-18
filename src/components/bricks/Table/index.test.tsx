@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { Table, BricksColumnDef } from './index';
+import { Table, BricksColumnDef } from '@/components/bricks/Table';
 import { Row } from '@tanstack/react-table';
 
 // Mock the UI components

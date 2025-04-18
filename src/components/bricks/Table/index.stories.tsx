@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { Table, BricksColumnDef } from "@/components/bricks/Table";
-import { BricksBadge } from "@/components/bricks/Badge";
+import { Badge } from "@/components/bricks/Badge";
 import { Text } from "@/components/bricks/Text";
 import { MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shadcn/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/shadcn/ui/dropdown-menu";
 import { Row } from "@tanstack/react-table";
 
 export type Lead = {
@@ -120,9 +120,9 @@ const baseColumns: BricksColumnDef<Lead>[] = [
       }
       
       return (
-        <BricksBadge variant={variant}>
+        <Badge variant={variant}>
           {stage}
-        </BricksBadge>
+        </Badge>
       );
     },
   },

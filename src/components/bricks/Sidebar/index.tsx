@@ -98,7 +98,7 @@ export function Sidebar({
           className="border-r border-neutral-200 bg-white shadow-sm "
           variant="sidebar"
           style={{ 
-            width: open ? "300px" : "80px",
+            width: open ? "17%" : "80px",
             transition: "width 200ms ease-in-out"
           }}
         >
@@ -150,7 +150,7 @@ export function Sidebar({
           <div className="mt-auto">
             {user && (
               <SidebarFooter className={cn(
-                "py-3 bg-white",
+                "py-3 bg-white max-h-[100px]",
                 open ? "px-6" : "flex justify-center"
               )}>
                 <div className={cn(
@@ -168,7 +168,7 @@ export function Sidebar({
                     </span>
                   </div>
                   {open && (
-                    <div className="overflow-hidden w-full max-h-[50px]">
+                    <div className="overflow-hidden w-full max-h-[100px]">
                       <TitleWithSubText 
                         title={user.name} 
                         subText={user.email}

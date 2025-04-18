@@ -18,9 +18,9 @@ function BricksBadge({
   const getVariantClasses = () => {
     switch (variant) {
       case "success":
-        return "bg-success text-success-foreground";
+        return "bg-green-200 text-green-950";
       case "danger":
-        return "bg-danger text-danger-foreground";
+        return "bg-red-200 text-red-950";
       default:
         return "";
     }

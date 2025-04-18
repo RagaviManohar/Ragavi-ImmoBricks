@@ -267,8 +267,9 @@ describe('Table Component', () => {
     const headerRows = screen.getAllByTestId('mocked-table-row');
     expect(headerRows[0].className).toContain('hover:bg-transparent border-none');
     
-    // Check styling of data rows
-    expect(headerRows[1].className).toContain('bg-white border-none');
+    // Check that every data row has the correct className
+    expect(headerRows.length).toBe(7); // Header row + 3 data rows + 3 divider rows + 1 empty row for testing
+    expect(headerRows[1].className).toContain('bg-neutral-0 border-none');
   });
 
   test('renders divider rows between data rows', () => {

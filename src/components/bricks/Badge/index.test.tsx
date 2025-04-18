@@ -44,7 +44,7 @@ describe('BricksBadge', () => {
     const badge = screen.getByTestId('mocked-badge');
     expect(badge).toBeDefined();
     expect(badge.textContent).toBe('Success');
-    expect(badge.className).toContain('bg-success text-success-foreground');
+    expect(badge.className).toContain('bg-green-200 text-green-950');
     expect(badge.getAttribute('data-variant')).toBeNull(); // Custom variant not passed through
   });
 
@@ -54,7 +54,7 @@ describe('BricksBadge', () => {
     const badge = screen.getByTestId('mocked-badge');
     expect(badge).toBeDefined();
     expect(badge.textContent).toBe('Danger');
-    expect(badge.className).toContain('bg-danger text-danger-foreground');
+    expect(badge.className).toContain('bg-red-200 text-red-950');
     expect(badge.getAttribute('data-variant')).toBeNull(); // Custom variant not passed through
   });
 

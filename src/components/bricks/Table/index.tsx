@@ -124,7 +124,7 @@ export function Table<TData>({
     <div className="w-full flex flex-col gap-2">
       <TableUI className="w-full overflow-hidden">
         {/* Fixed header table */}
-        <div className="sticky top-0 z-30 w-full bg-gray-50">
+        <div className="sticky top-0 z-30 w-full bg-neutral-50">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -134,7 +134,7 @@ export function Table<TData>({
                 {showCheckboxes && (
                   <TableHead
                     key="checkbox-header"
-                    className="px-3 py-2 align-middle bg-gray-50"
+                    className="px-3 py-2 align-middle bg-neutral-50"
                   >
                     {renderCheckbox()}
                   </TableHead>
@@ -143,11 +143,11 @@ export function Table<TData>({
                   return (
                     <TableHead
                       key={header.id}
-                      className="p-0 h-auto align-middle bg-gray-50"
+                      className="p-0 h-auto align-middle bg-neutral-50"
                     >
                       <div
                         className={cn(
-                          "px-3 py-2 text-[var(--table-header-text)] text-sm font-normal flex items-center gap-1",
+                          "px-3 py-2 text-neutral-600 text-sm font-normal flex items-center gap-1",
                           header.column.getCanSort()
                             ? "cursor-pointer select-none"
                             : ""
@@ -161,7 +161,7 @@ export function Table<TData>({
                           )}
                         </span>
                         {header.column.getIsSorted() ? (
-                          <span className="flex items-center text-gray-600">
+                          <span className="flex items-center text-neutral-600">
                             {header.column.getIsSorted() === "asc" ? (
                               <ChevronUpIcon className="h-4 w-4" />
                             ) : (
@@ -169,7 +169,7 @@ export function Table<TData>({
                             )}
                           </span>
                         ) : header.column.getCanSort() ? (
-                          <span className="flex items-center text-gray-600">
+                          <span className="flex items-center text-neutral-600">
                             <ChevronsUpDownIcon className="h-4 w-4" />
                           </span>
                         ) : null}
@@ -191,7 +191,7 @@ export function Table<TData>({
                   <React.Fragment key={row.id}>
                     <TableRow
                       data-state={row.getIsSelected() && "selected"}
-                      className={cn("bg-white border-none")}
+                      className={cn("bg-neutral-0 border-none")}
                     >
                       {showCheckboxes && (
                         <TableCell
@@ -229,14 +229,14 @@ export function Table<TData>({
                         colSpan={columns.length + (showCheckboxes ? 1 : 0)}
                         className="p-0 h-0"
                       >
-                        <div className="h-[1.5px] bg-gray-200 w-full"></div>
+                        <div className="h-[1.5px] bg-neutral-200 w-full"></div>
                       </TableCell>
                     </TableRow>
                   </React.Fragment>
                 );
               })
             ) : (
-              <TableRow className="bg-white rounded-b-lg border-none border-gray-200 border-b-[1.5px]">
+              <TableRow className="bg-neutral-0 rounded-b-lg border-none border-neutral-200 border-b-[1.5px]">
                 <TableCell
                   colSpan={columns.length + (showCheckboxes ? 1 : 0)}
                   className="h-24 text-center"

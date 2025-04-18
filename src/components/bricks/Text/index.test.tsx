@@ -70,11 +70,11 @@ describe('Text', () => {
   test('applies correct color classes for main text', () => {
     const { rerender } = render(<Text text="Black Text" color="black" />);
     let mainText = screen.getByText('Black Text');
-    expect(mainText.className).toContain('text-[var(--table-row-title)]');
+    expect(mainText.className).toContain('text-neutral-950');
     
     rerender(<Text text="Gray Text" color="gray" />);
     mainText = screen.getByText('Gray Text');
-    expect(mainText.className).toContain('text-[var(--table-header-text)]');
+    expect(mainText.className).toContain('text-neutral-600');
   });
 
   test('applies correct size classes for subtext', () => {
@@ -116,11 +116,11 @@ describe('Text', () => {
   test('applies correct color classes for subtext', () => {
     const { rerender } = render(<Text text="Main" subText="Black Text" subTextColor="black" />);
     let subText = screen.getByText('Black Text');
-    expect(subText.className).toContain('text-[var(--table-row-title)]');
+    expect(subText.className).toContain('text-neutral-950');
     
     rerender(<Text text="Main" subText="Gray Text" subTextColor="gray" />);
     subText = screen.getByText('Gray Text');
-    expect(subText.className).toContain('text-[var(--table-header-text)]');
+    expect(subText.className).toContain('text-neutral-600');
   });
 
   test('applies custom className to main text', () => {
@@ -156,7 +156,7 @@ describe('Text', () => {
     
     expect(mainText.className).toContain('text-lg');
     expect(mainText.className).toContain('font-bold');
-    expect(mainText.className).toContain('text-[var(--table-row-title)]');
+    expect(mainText.className).toContain('text-neutral-950');
     expect(mainText.className).toContain('custom-class');
   });
 
@@ -173,6 +173,6 @@ describe('Text', () => {
     
     expect(subText.className).toContain('text-base');
     expect(subText.className).toContain('font-semibold');
-    expect(subText.className).toContain('text-[var(--table-row-title)]');
+    expect(subText.className).toContain('text-neutral-950');
   });
 }); 

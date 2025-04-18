@@ -39,8 +39,8 @@ export function Text({
   };
 
   const colorClasses = {
-    black: "text-[var(--table-row-title)]",
-    gray: "text-[var(--table-header-text)]",
+    black: "text-neutral-950",
+    gray: "text-neutral-600",
   };
 
   return (

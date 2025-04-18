@@ -5,7 +5,10 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
-    include: ['**/__tests__/**/*.test.{ts,tsx}'],
+    include: [
+      '**/__tests__/**/*.test.{ts,tsx}',
+      'src/components/bricks/**/*.test.{ts,tsx}'
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

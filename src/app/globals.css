@@ -89,6 +89,14 @@
   --table-divider: #E1E4EA;
   --table-row-title: #0E121B;
   --table-row-subtitle: #525866;
+
+  --neutral-950: #0E121B;
+  --neutral-600: #525866;
+  --neutral-300: #CACFD8;
+  --neutral-400: #99A0AE;
+  --neutral-200: #E1E4EA;
+  --white: #FFFFFF;
+
 }
 
 .dark {

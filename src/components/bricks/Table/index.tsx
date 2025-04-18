@@ -121,47 +121,60 @@ export function Table<TData>({
   };
 
   return (
-    <div className="w-full flex flex-col gap-2">
-      <ShadcnTable className="w-full overflow-hidden">
-        {/* Fixed header table */}
-        <div className="sticky top-0 z-30 w-full bg-neutral-50">
-          <ShadcnTableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <ShadcnTableRow
-                key={headerGroup.id}
-                className="hover:bg-transparent border-none"
-              >
-                {showCheckboxes && (
-                  <ShadcnTableHead
-                    key="checkbox-header"
-                    className="px-3 py-2 align-middle bg-neutral-50"
+    <div className="relative w-full overflow-auto max-h-[600px]">
+      <ShadcnTable className="w-full">
+        <ShadcnTableHeader className="sticky top-0 z-10 bg-neutral-50">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <ShadcnTableRow
+              key={headerGroup.id}
+              className="hover:bg-transparent border-none"
+            >
+              {showCheckboxes && (
+                <ShadcnTableHead
+                  key="checkbox-header"
+                  className="w-12 align-middle p-0"
+                >
+                  <ShadcnTableCell
+                    key="checkbox-cell"
+                    className="w-12 h-16 align-middle px-3 py-3"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    {renderCheckbox()}
-                  </ShadcnTableHead>
-                )}
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <ShadcnTableHead
-                      key={header.id}
-                      className="p-0 h-auto align-middle bg-neutral-50"
+                    <div className="flex justify-center items-center h-full">
+                      {renderCheckbox()}
+                    </div>
+                  </ShadcnTableCell>
+                </ShadcnTableHead>
+              )}
+              {headerGroup.headers.map((header, index) => {
+                const isFirstDataColumn = index === 0;
+                return (
+                  <ShadcnTableHead
+                    key={header.id}
+                    className={cn(
+                      "h-16 align-middle p-0",
+                      isFirstDataColumn && showCheckboxes ? "w-[300px]" : ""
+                    )}
+                  >
+                    <ShadcnTableCell
+                      className={cn(
+                        "h-full flex items-center px-3 py-2 text-neutral-600 text-sm font-normal",
+                        header.column.getCanSort()
+                          ? "cursor-pointer select-none"
+                          : ""
+                      )}
+                      onClick={header.column.getToggleSortingHandler()}
                     >
-                      <div
-                        className={cn(
-                          "px-3 py-2 text-neutral-600 text-sm font-normal flex items-center gap-1",
-                          header.column.getCanSort()
-                            ? "cursor-pointer select-none"
-                            : ""
-                        )}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        <span>
+                      <span className="flex items-center gap-2 min-w-0">
+                        <span className="truncate">
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
                         </span>
+                        
+                        {/* SORT */}
                         {header.column.getIsSorted() ? (
-                          <span className="flex items-center text-neutral-600">
+                          <span className="flex-shrink-0 flex items-center text-neutral-600">
                             {header.column.getIsSorted() === "asc" ? (
                               <ChevronUpIcon className="h-4 w-4" />
                             ) : (
@@ -169,84 +182,105 @@ export function Table<TData>({
                             )}
                           </span>
                         ) : header.column.getCanSort() ? (
-                          <span className="flex items-center text-neutral-600">
+                          <span className="flex-shrink-0 flex items-center text-neutral-600">
                             <ChevronsUpDownIcon className="h-4 w-4" />
                           </span>
                         ) : null}
-                      </div>
-                    </ShadcnTableHead>
-                  );
-                })}
-              </ShadcnTableRow>
-            ))}
-          </ShadcnTableHeader>
-        </div>
+                      </span>
+                    </ShadcnTableCell>
+                  </ShadcnTableHead>
+                );
+              })}
+            </ShadcnTableRow>
+          ))}
+        </ShadcnTableHeader>
 
-        {/* Scrollable body table */}
-        <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
-          <ShadcnTableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => {
-                return (
-                  <React.Fragment key={row.id}>
-                    <ShadcnTableRow
-                      data-state={row.getIsSelected() && "selected"}
-                      className={cn("bg-neutral-0 border-none")}
-                    >
-                      {showCheckboxes && (
-                        <ShadcnTableCell
-                          key="checkbox-cell"
-                          className="px-3 py-3 h-16 align-middle"
-                          onClick={(e) => e.stopPropagation()}
-                        >
+        <ShadcnTableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => {
+              return (
+                <React.Fragment key={row.id}>
+                  <ShadcnTableRow
+                    data-state={row.getIsSelected() && "selected"}
+                    className={cn("bg-neutral-0 border-none")}
+                  >
+                    {showCheckboxes && (
+                      <ShadcnTableCell
+                        key="checkbox-cell"
+                        className="w-12 h-16 align-middle px-3 py-3"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex justify-center items-center h-full">
                           {renderCheckbox(row)}
-                        </ShadcnTableCell>
-                      )}
-                      {row.getVisibleCells().map((cell) => {
-                        const isActionCell = cell.column.id === "actions";
+                        </div>
+                      </ShadcnTableCell>
+                    )}
+                    {row.getVisibleCells().map((cell) => {
+                      const isActionCell = cell.column.id === "actions";
+                      const isStageCell = cell.column.id === "stage";
+                      const isFirstDataCell = cell.column.id === columns[0].id;
 
-                        return (
-                          <ShadcnTableCell
-                            key={cell.id}
-                            className="px-3 py-3 h-16 align-middle"
-                            onClick={
-                              isActionCell
-                                ? (e) => e.stopPropagation()
-                                : undefined
-                            }
+                      let cellClassName = "h-16 align-middle";
+
+                      if (isStageCell) {
+                        cellClassName = cn(cellClassName, "p-3");
+                      } else {
+                        cellClassName = cn(cellClassName, "pl-3 pr-5 py-3");
+                      }
+
+                      if (isFirstDataCell && showCheckboxes) {
+                        cellClassName = cn(cellClassName, "w-[300px]");
+                      }
+
+                      return (
+                        <ShadcnTableCell
+                          key={cell.id}
+                          className={cellClassName}
+                          onClick={
+                            isActionCell
+                              ? (e) => e.stopPropagation()
+                              : undefined
+                          }
+                        >
+                          <div
+                            className={cn(
+                              isStageCell
+                                ? "flex justify-center items-center h-full"
+                                : ""
+                            )}
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()
                             )}
-                          </ShadcnTableCell>
-                        );
-                      })}
-                    </ShadcnTableRow>
+                          </div>
+                        </ShadcnTableCell>
+                      );
+                    })}
+                  </ShadcnTableRow>
 
-                    <ShadcnTableRow className="border-none">
-                      <ShadcnTableCell
-                        colSpan={columns.length + (showCheckboxes ? 1 : 0)}
-                        className="p-0 h-0"
-                      >
-                        <div className="h-[1.5px] bg-neutral-200 w-full"></div>
-                      </ShadcnTableCell>
-                    </ShadcnTableRow>
-                  </React.Fragment>
-                );
-              })
-            ) : (
-              <ShadcnTableRow className="bg-neutral-0 rounded-b-lg border-none border-neutral-200 border-b-[1.5px]">
-                <ShadcnTableCell
-                  colSpan={columns.length + (showCheckboxes ? 1 : 0)}
-                  className="h-24 text-center"
-                >
-                  {emptyMessage}
-                </ShadcnTableCell>
-              </ShadcnTableRow>
-            )}
-          </ShadcnTableBody>
-        </div>
+                  <ShadcnTableRow className="border-none">
+                    <ShadcnTableCell
+                      colSpan={columns.length + (showCheckboxes ? 1 : 0)}
+                      className="p-0 h-0"
+                    >
+                      <div className="h-[1.5px] bg-neutral-200 w-full"></div>
+                    </ShadcnTableCell>
+                  </ShadcnTableRow>
+                </React.Fragment>
+              );
+            })
+          ) : (
+            <ShadcnTableRow className="bg-neutral-0 rounded-b-lg border-none border-neutral-200 border-b-[1.5px]">
+              <ShadcnTableCell
+                colSpan={columns.length + (showCheckboxes ? 1 : 0)}
+                className="h-24 text-center"
+              >
+                {emptyMessage}
+              </ShadcnTableCell>
+            </ShadcnTableRow>
+          )}
+        </ShadcnTableBody>
       </ShadcnTable>
     </div>
   );

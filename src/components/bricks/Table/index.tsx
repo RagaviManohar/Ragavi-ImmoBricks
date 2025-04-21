@@ -29,6 +29,8 @@ import {
   TableRow as ShadcnTableRow,
 } from "@/components/shadcn/ui/table";
 
+import styles from "./table-overrides.module.css";
+
 // More specific column definition type
 export type BricksColumnDef<TData> = ColumnDef<TData> & {
   id: string;
@@ -121,9 +123,9 @@ export function Table<TData>({
   };
 
   return (
-    <div className="relative w-full overflow-auto max-h-[600px]">
-      <ShadcnTable className="w-full">
-        <ShadcnTableHeader className="sticky top-0 z-10 bg-neutral-50">
+    <div className={styles.tableContainer}>
+      <ShadcnTable className={cn("w-full", styles.table)}>
+        <ShadcnTableHeader className={cn("sticky top-0 z-10 bg-neutral-50", styles.tableHeader)}>
           {table.getHeaderGroups().map((headerGroup) => (
             <ShadcnTableRow
               key={headerGroup.id}

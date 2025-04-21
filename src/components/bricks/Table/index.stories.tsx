@@ -50,7 +50,7 @@ const defaultData: Lead[] = [
   {
     id: "4172",
     name: "Mountain Ridge Villas",
-    location: "Zurich", 
+    location: "Zurich",
     stage: "Processing",
     market: "Switzerland",
     marketSubtext: "Alpine Area",
@@ -87,7 +87,11 @@ const baseColumns: BricksColumnDef<Lead>[] = [
     header: "Lead name",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <Text text={row.original.name} weight="medium" subText={row.original.location} />
+      <Text
+        text={row.original.name}
+        weight="medium"
+        subText={row.original.location}
+      />
     ),
   },
   {
@@ -107,7 +111,7 @@ const baseColumns: BricksColumnDef<Lead>[] = [
     cell: ({ row }: { row: Row<Lead> }) => {
       const stage = row.original.stage;
       let variant: "success" | "danger" | undefined;
-      
+
       switch (stage) {
         case "New":
           variant = "success";
@@ -118,12 +122,8 @@ const baseColumns: BricksColumnDef<Lead>[] = [
         default:
           variant = "success";
       }
-      
-      return (
-        <Badge variant={variant}>
-          {stage}
-        </Badge>
-      );
+
+      return <Badge variant={variant}>{stage}</Badge>;
     },
   },
   {
@@ -149,9 +149,7 @@ const baseColumns: BricksColumnDef<Lead>[] = [
     accessorKey: "added",
     header: "Added",
     enableSorting: false,
-    cell: ({ row }: { row: Row<Lead> }) => (
-      <Text text={row.original.added} />
-    ),
+    cell: ({ row }: { row: Row<Lead> }) => <Text text={row.original.added} />,
   },
 ];
 
@@ -170,39 +168,44 @@ type Story = StoryObj<typeof Table<Lead>>;
 export const Default: Story = {
   render: () => (
     <Table<Lead>
-      data={defaultData} 
+      data={defaultData}
       columns={baseColumns}
-      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+      onRowsSelected={(selectedRowIds) =>
+        action("onRowsSelected")(selectedRowIds)
+      }
     />
   ),
   parameters: {
     actions: { argTypesRegex: "^on.*" },
     docs: {
       description: {
-        story: 'Basic table with clickable rows. Click on a row to see details in the actions panel.'
-      }
-    }
-  }
+        story:
+          "Basic table with clickable rows. Click on a row to see details in the actions panel.",
+      },
+    },
+  },
 };
 
 // New story without checkboxes enabled
 export const WithoutCheckboxes: Story = {
   render: () => (
     <Table<Lead>
-      data={defaultData} 
+      data={defaultData}
       columns={baseColumns}
       showCheckboxes={false} // Disable checkboxes
-      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+      onRowsSelected={(selectedRowIds) =>
+        action("onRowsSelected")(selectedRowIds)
+      }
     />
   ),
   parameters: {
     actions: { argTypesRegex: "^on.*" },
     docs: {
       description: {
-        story: 'Table without checkboxes.'
-      }
-    }
-  }
+        story: "Table without checkboxes.",
+      },
+    },
+  },
 };
 
 // Actions column definition
@@ -228,7 +231,9 @@ const actionsColumn: BricksColumnDef<Lead> = {
           <ShadcnDropdownMenuItem onClick={() => action("View lead")(lead)}>
             View lead
           </ShadcnDropdownMenuItem>
-          <ShadcnDropdownMenuItem onClick={() => action("View lead details")(lead)}>
+          <ShadcnDropdownMenuItem
+            onClick={() => action("View lead details")(lead)}
+          >
             View lead details
           </ShadcnDropdownMenuItem>
         </ShadcnDropdownMenuContent>
@@ -240,25 +245,28 @@ const actionsColumn: BricksColumnDef<Lead> = {
 // Columns with actions added
 const columnsWithActions: BricksColumnDef<Lead>[] = [
   ...baseColumns,
-  actionsColumn
+  actionsColumn,
 ];
 
 export const WithActions: Story = {
   render: () => (
     <Table<Lead>
-      data={defaultData} 
+      data={defaultData}
       columns={columnsWithActions}
-      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+      onRowsSelected={(selectedRowIds) =>
+        action("onRowsSelected")(selectedRowIds)
+      }
     />
   ),
   parameters: {
     actions: { argTypesRegex: "^on.*" },
     docs: {
       description: {
-        story: 'Table with an additional actions column that provides a dropdown menu.'
-      }
-    }
-  }
+        story:
+          "Table with an additional actions column that provides a dropdown menu.",
+      },
+    },
+  },
 };
 
 // Empty data array for the empty state story
@@ -269,44 +277,48 @@ export const EmptyState: Story = {
     <Table<Lead>
       data={emptyData}
       columns={baseColumns}
-      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+      onRowsSelected={(selectedRowIds) =>
+        action("onRowsSelected")(selectedRowIds)
+      }
     />
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Table with no data, showing the empty state message "No results."'
-      }
-    }
-  }
+        story:
+          'Table with no data, showing the empty state message "No results."',
+      },
+    },
+  },
 };
 
 // Create a large dataset for scroll demonstration
 const largeDataset: Lead[] = [
   ...defaultData,
-  ...defaultData.map(item => ({ ...item, id: `5${item.id.substring(1)}` })),
-  ...defaultData.map(item => ({ ...item, id: `6${item.id.substring(1)}` })),
-  ...defaultData.map(item => ({ ...item, id: `7${item.id.substring(1)}` })),
-  ...defaultData.map(item => ({ ...item, id: `8${item.id.substring(1)}` })),
+  ...defaultData.map((item) => ({ ...item, id: `5${item.id.substring(1)}` })),
+  ...defaultData.map((item) => ({ ...item, id: `6${item.id.substring(1)}` })),
+  ...defaultData.map((item) => ({ ...item, id: `7${item.id.substring(1)}` })),
+  ...defaultData.map((item) => ({ ...item, id: `8${item.id.substring(1)}` })),
 ];
 
 export const WithVerticalScroll: Story = {
   render: () => (
-    <div style={{ width: '100%', maxWidth: '900px' }}>
-      <Table<Lead>
-        data={largeDataset}
-        columns={baseColumns}
-        onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
-      />
-    </div>
+    <Table<Lead>
+      data={largeDataset}
+      columns={baseColumns}
+      onRowsSelected={(selectedRowIds) =>
+        action("onRowsSelected")(selectedRowIds)
+      }
+    />
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Table with many records to demonstrate vertical scrolling behavior'
-      }
-    }
-  }
+        story:
+          "Table with many records to demonstrate vertical scrolling behavior",
+      },
+    },
+  },
 };
 
 // Create wider columns for horizontal scroll
@@ -318,7 +330,9 @@ const wideColumns: BricksColumnDef<Lead>[] = [
     header: "Very Long Description Column",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <Text text={`This is a very long description for ${row.original.name} property located in ${row.original.location} with ${row.original.units} units available.`} />
+      <Text
+        text={`This is a very long description for ${row.original.name} property located in ${row.original.location} with ${row.original.units} units available.`}
+      />
     ),
   },
   {
@@ -327,29 +341,34 @@ const wideColumns: BricksColumnDef<Lead>[] = [
     header: "Additional Property Details",
     enableSorting: true,
     cell: ({ row }: { row: Row<Lead> }) => (
-      <Text text={`Extra information for property #${row.original.id} in the ${row.original.marketSubtext || 'Standard'} category`} />
+      <Text
+        text={`Extra information for property #${row.original.id} in the ${
+          row.original.marketSubtext || "Standard"
+        } category`}
+      />
     ),
   },
-  actionsColumn
+  actionsColumn,
 ];
 
 export const WithHorizontalAndVerticalScroll: Story = {
   render: () => (
-    <div style={{ width: '100%', maxWidth: '700px' }}>
-      <Table<Lead>
-        data={largeDataset}
-        columns={wideColumns}
-        onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
-      />
-    </div>
+    <Table<Lead>
+      data={largeDataset}
+      columns={wideColumns}
+      onRowsSelected={(selectedRowIds) =>
+        action("onRowsSelected")(selectedRowIds)
+      }
+    />
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Table with many records and wide columns to demonstrate both horizontal and vertical scrolling'
-      }
-    }
-  }
+        story:
+          "Table with many records and wide columns to demonstrate both horizontal and vertical scrolling",
+      },
+    },
+  },
 };
 
 export const CustomEmptyMessage: Story = {
@@ -358,14 +377,16 @@ export const CustomEmptyMessage: Story = {
       data={emptyData}
       columns={baseColumns}
       emptyMessage="No properties found. Try adjusting your filters."
-      onRowsSelected={(selectedRowIds) => action("onRowsSelected")(selectedRowIds)}
+      onRowsSelected={(selectedRowIds) =>
+        action("onRowsSelected")(selectedRowIds)
+      }
     />
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Table with custom empty state message'
-      }
-    }
-  }
+        story: "Table with custom empty state message",
+      },
+    },
+  },
 };

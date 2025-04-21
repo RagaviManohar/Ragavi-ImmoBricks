@@ -5,7 +5,7 @@ import { Table, BricksColumnDef } from '@/components/bricks/Table';
 import { Row } from '@tanstack/react-table';
 
 // Mock the UI components
-vi.mock('@/components/ui/checkbox', () => ({
+vi.mock('@/components/shadcn/ui/checkbox', () => ({
   Checkbox: ({ 
     className, 
     checked, 
@@ -25,7 +25,7 @@ vi.mock('@/components/ui/checkbox', () => ({
   ),
 }));
 
-vi.mock('@/components/ui/table', () => ({
+vi.mock('@/components/shadcn/ui/table', () => ({
   Table: ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div data-testid="mocked-table" className={className} {...props}>
       {children}

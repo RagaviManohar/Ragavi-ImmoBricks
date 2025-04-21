@@ -6,7 +6,7 @@ import { describe, test, expect, vi, beforeEach } from "vitest";
 import { Badge } from "@/components/bricks/Badge";
 
 // Mock dependencies
-vi.mock("@/components/ui/badge", () => ({
+vi.mock("@/components/shadcn/ui/Badge", () => ({
   Badge: ({
     className,
     children,

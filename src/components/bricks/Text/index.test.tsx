@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Text } from '@/components/bricks/Text';
 
 // Mock the cn utility function
@@ -13,7 +13,7 @@ describe('Text', () => {
     vi.clearAllMocks();
   });
 
-  test('renders with default props', () => {
+  it('renders with default props', () => {
     render(<Text text="Main Text" />);
     
     const mainText = screen.getByText('Main Text');
@@ -22,7 +22,7 @@ describe('Text', () => {
     expect(screen.queryByText('Subtext')).toBeNull();
   });
 
-  test('renders with subtext', () => {
+  it('renders with subtext', () => {
     render(<Text text="Main Text" subText="Subtext" />);
     
     const mainText = screen.getByText('Main Text');
@@ -31,7 +31,7 @@ describe('Text', () => {
     expect(subText).toBeDefined();
   });
 
-  test('applies correct size classes for main text', () => {
+  it('applies correct size classes for main text', () => {
     const { rerender } = render(<Text text="Size XS" size="xs" />);
     let mainText = screen.getByText('Size XS');
     expect(mainText.className).toContain('text-xs');
@@ -49,7 +49,7 @@ describe('Text', () => {
     expect(mainText.className).toContain('text-lg');
   });
 
-  test('applies correct weight classes for main text', () => {
+  it('applies correct weight classes for main text', () => {
     const { rerender } = render(<Text text="Normal Weight" weight="normal" />);
     let mainText = screen.getByText('Normal Weight');
     expect(mainText.className).toContain('font-normal');
@@ -67,7 +67,7 @@ describe('Text', () => {
     expect(mainText.className).toContain('font-bold');
   });
 
-  test('applies correct color classes for main text', () => {
+  it('applies correct color classes for main text', () => {
     const { rerender } = render(<Text text="Black Text" color="black" />);
     let mainText = screen.getByText('Black Text');
     expect(mainText.className).toContain('text-neutral-950');
@@ -77,7 +77,7 @@ describe('Text', () => {
     expect(mainText.className).toContain('text-neutral-600');
   });
 
-  test('applies correct size classes for subtext', () => {
+  it('applies correct size classes for subtext', () => {
     const { rerender } = render(<Text text="Main" subText="Size XS" subTextSize="xs" />);
     let subText = screen.getByText('Size XS');
     expect(subText.className).toContain('text-xs');
@@ -95,7 +95,7 @@ describe('Text', () => {
     expect(subText.className).toContain('text-lg');
   });
 
-  test('applies correct weight classes for subtext', () => {
+  it('applies correct weight classes for subtext', () => {
     const { rerender } = render(<Text text="Main" subText="Normal Weight" subTextWeight="normal" />);
     let subText = screen.getByText('Normal Weight');
     expect(subText.className).toContain('font-normal');
@@ -113,7 +113,7 @@ describe('Text', () => {
     expect(subText.className).toContain('font-bold');
   });
 
-  test('applies correct color classes for subtext', () => {
+  it('applies correct color classes for subtext', () => {
     const { rerender } = render(<Text text="Main" subText="Black Text" subTextColor="black" />);
     let subText = screen.getByText('Black Text');
     expect(subText.className).toContain('text-neutral-950');
@@ -123,27 +123,27 @@ describe('Text', () => {
     expect(subText.className).toContain('text-neutral-600');
   });
 
-  test('applies custom className to main text', () => {
+  it('applies custom className to main text', () => {
     render(<Text text="Main Text" className="custom-class" />);
     const mainText = screen.getByText('Main Text');
     expect(mainText.className).toContain('custom-class');
   });
 
-  test('passes additional props to container div', () => {
+  it('passes additional props to container div', () => {
     render(<Text text="Main Text" data-testid="test-container" />);
     const container = screen.getByTestId('test-container');
     expect(container).toBeDefined();
     expect(container.className).toContain('flex flex-col');
   });
 
-  test('outer container has flex flex-col class', () => {
+  it('outer container has flex flex-col class', () => {
     render(<Text text="Main Text" />);
     const mainText = screen.getByText('Main Text');
     const container = mainText.parentElement;
     expect(container?.className).toContain('flex flex-col');
   });
 
-  test('combines all classnames correctly for main text', () => {
+  it('combines all classnames correctly for main text', () => {
     render(<Text 
       text="Styled Text" 
       size="lg" 
@@ -160,7 +160,7 @@ describe('Text', () => {
     expect(mainText.className).toContain('custom-class');
   });
 
-  test('combines all classnames correctly for subtext', () => {
+  it('combines all classnames correctly for subtext', () => {
     render(<Text 
       text="Main" 
       subText="Styled Subtext" 
@@ -175,4 +175,4 @@ describe('Text', () => {
     expect(subText.className).toContain('font-semibold');
     expect(subText.className).toContain('text-neutral-950');
   });
-}); 
+});

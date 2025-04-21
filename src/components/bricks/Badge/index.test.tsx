@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // Import after mocks
 import { Badge } from "@/components/bricks/Badge";
@@ -34,7 +34,7 @@ describe("Badge", () => {
     vi.clearAllMocks();
   });
 
-  test("renders with default props", () => {
+  it("renders with default props", () => {
     render(<Badge>Default</Badge>);
 
     const badge = screen.getByTestId("mocked-badge");
@@ -46,7 +46,7 @@ describe("Badge", () => {
     expect(badge.getAttribute("data-variant")).toBeNull();
   });
 
-  test("renders with success variant", () => {
+  it("renders with success variant", () => {
     render(<Badge variant="success">Success</Badge>);
 
     const badge = screen.getByTestId("mocked-badge");
@@ -56,7 +56,7 @@ describe("Badge", () => {
     expect(badge.getAttribute("data-variant")).toBeNull(); // Custom variant not passed through
   });
 
-  test("renders with danger variant", () => {
+  it("renders with danger variant", () => {
     render(<Badge variant="danger">Danger</Badge>);
 
     const badge = screen.getByTestId("mocked-badge");
@@ -66,7 +66,7 @@ describe("Badge", () => {
     expect(badge.getAttribute("data-variant")).toBeNull(); // Custom variant not passed through
   });
 
-  test("renders with standard Badge variant", () => {
+  it("renders with standard Badge variant", () => {
     render(<Badge variant="secondary">Secondary</Badge>);
 
     const badge = screen.getByTestId("mocked-badge");
@@ -75,7 +75,7 @@ describe("Badge", () => {
     expect(badge.getAttribute("data-variant")).toBe("secondary");
   });
 
-  test("renders with custom className", () => {
+  it("renders with custom className", () => {
     render(
       <Badge className="custom-class">With Custom Class</Badge>
     );
@@ -85,7 +85,7 @@ describe("Badge", () => {
     expect(badge.className).toContain("custom-class");
   });
 
-  test("passes additional props to Badge component", () => {
+  it("passes additional props to Badge component", () => {
     render(
       <Badge data-testprop="test-value">
         With Additional Props

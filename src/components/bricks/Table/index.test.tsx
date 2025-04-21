@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Table, BricksColumnDef } from '@/components/bricks/Table';
 import { Row } from '@tanstack/react-table';
 
@@ -120,7 +120,7 @@ describe('Table Component', () => {
     vi.clearAllMocks();
   });
 
-  test('renders with data and columns', () => {
+  it('renders with data and columns', () => {
     render(<Table data={testData} columns={testColumns} />);
     
     expect(screen.getByTestId('mocked-table')).toBeDefined();
@@ -147,7 +147,7 @@ describe('Table Component', () => {
     expect(screen.getByText('Edit 3')).toBeDefined();
   });
 
-  test('renders with checkboxes when showCheckboxes is true', () => {
+  it('renders with checkboxes when showCheckboxes is true', () => {
     render(<Table data={testData} columns={testColumns} showCheckboxes={true} />);
     
     // Check for header checkbox
@@ -155,14 +155,14 @@ describe('Table Component', () => {
     expect(checkboxes.length).toBe(4); // 1 header + 3 rows
   });
 
-  test('renders without checkboxes when showCheckboxes is false', () => {
+  it('renders without checkboxes when showCheckboxes is false', () => {
     render(<Table data={testData} columns={testColumns} showCheckboxes={false} />);
     
     // Check that no checkboxes are rendered
     expect(screen.queryAllByTestId('mocked-checkbox').length).toBe(0);
   });
 
-  test('handles row selection via checkboxes', () => {
+  it('handles row selection via checkboxes', () => {
     const onRowsSelectedMock = vi.fn();
     render(
       <Table 
@@ -189,7 +189,7 @@ describe('Table Component', () => {
     expect(onRowsSelectedMock).toHaveBeenCalledWith(['1', '2']);
   });
 
-  test('handles select all rows via header checkbox', () => {
+  it('handles select all rows via header checkbox', () => {
     const onRowsSelectedMock = vi.fn();
     render(
       <Table 
@@ -210,7 +210,7 @@ describe('Table Component', () => {
     expect(onRowsSelectedMock).toHaveBeenCalledWith(['1', '2', '3']);
   });
 
-  test('renders sorting icons when column is sortable', () => {
+  it('renders sorting icons when column is sortable', () => {
     render(<Table data={testData} columns={testColumns} />);
     
     // Check for default unsorted icon
@@ -229,7 +229,7 @@ describe('Table Component', () => {
     expect(screen.getByTestId('chevron-down-icon')).toBeDefined();
   });
 
-  test('displays empty message when no data is provided', () => {
+  it('displays empty message when no data is provided', () => {
     const emptyMessage = 'No data available';
     render(
       <Table 
@@ -242,13 +242,13 @@ describe('Table Component', () => {
     expect(screen.getByText(emptyMessage)).toBeDefined();
   });
 
-  test('uses default empty message when none is provided', () => {
+  it('uses default empty message when none is provided', () => {
     render(<Table data={[]} columns={testColumns} />);
     
     expect(screen.getByText('No results.')).toBeDefined();
   });
 
-  test('handles action cell clicks without row selection', () => {
+  it('handles action cell clicks without row selection', () => {
     render(<Table data={testData} columns={testColumns} showCheckboxes={true} />);
     
     // Click an action button
@@ -260,7 +260,7 @@ describe('Table Component', () => {
     expect(firstRowCheckbox.checked).toBeFalsy();
   });
 
-  test('applies custom styling to different parts of the table', () => {
+  it('applies custom styling to different parts of the table', () => {
     render(<Table data={testData} columns={testColumns} />);
     
     // Check header row styling
@@ -272,7 +272,7 @@ describe('Table Component', () => {
     expect(headerRows[1].className).toContain('bg-neutral-0 border-none');
   });
 
-  test('renders divider rows between data rows', () => {
+  it('renders divider rows between data rows', () => {
     render(<Table data={testData} columns={testColumns} />);
     
     // We should have divider rows (alternating with data rows)
@@ -285,7 +285,7 @@ describe('Table Component', () => {
     expect(dividerCells.length).toBe(testData.length);
   });
 
-  test('handles column visibility changes', () => {
+  it('handles column visibility changes', () => {
     render(<Table data={testData} columns={testColumns} />);
     
     // Mock the column visibility change event - this would normally be triggered by a visibility toggle UI
@@ -297,7 +297,7 @@ describe('Table Component', () => {
     render(<Table data={testData} columns={testColumns} />);
   });
 
-  test('handles pagination', () => {
+  it('handles pagination', () => {
     // Create more data to trigger pagination
     const paginatedData = [
       ...testData,
@@ -318,7 +318,7 @@ describe('Table Component', () => {
     expect(rows.length).toBeGreaterThan(0);
   });
 
-  test('handles non-sortable columns correctly', () => {
+  it('handles non-sortable columns correctly', () => {
     render(<Table data={testData} columns={testColumnsWithNonSortable} />);
     
     // This should render the Name header without sorting icons
@@ -332,7 +332,7 @@ describe('Table Component', () => {
     expect(screen.queryAllByTestId('chevrons-updown-icon').length).toBe(2); // Only for Age and Actions
   });
 
-  test('renders table row with selected state', () => {
+  it('renders table row with selected state', () => {
     const onRowsSelectedMock = vi.fn();
     render(
       <Table 

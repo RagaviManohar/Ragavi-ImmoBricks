@@ -171,7 +171,7 @@ export function Table<TData>({
                             header.getContext()
                           )}
                         </span>
-                        
+
                         {/* SORT */}
                         {header.column.getIsSorted() ? (
                           <span className="flex-shrink-0 flex items-center text-neutral-600">

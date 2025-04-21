@@ -5,25 +5,25 @@ import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeftIcon } from "lucide-react"
 
-import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
+import { useIsMobile } from "@/components/shadcn/hooks/use-mobile"
+import { cn } from "@/components/shadcn/lib/utils"
+import { Button as ShadcnButton } from "@/components/shadcn/ui/button"
+import { Input as ShadcnInput } from "@/components/shadcn/ui/input"
+import { Separator as ShadcnSeparator } from "@/components/shadcn/ui/separator"
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet"
-import { Skeleton } from "@/components/ui/skeleton"
+  Sheet as ShadcnSheet,
+  SheetContent as ShadcnSheetContent,
+  SheetDescription as ShadcnSheetDescription,
+  SheetHeader as ShadcnSheetHeader,
+  SheetTitle as ShadcnSheetTitle,
+} from "@/components/shadcn/ui/sheet"
+import { Skeleton as ShadcnSkeleton } from "@/components/shadcn/ui/skeleton"
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+  Tooltip as ShadcnTooltip,
+  TooltipContent as ShadcnTooltipContent,
+  TooltipProvider as ShadcnTooltipProvider,
+  TooltipTrigger as ShadcnTooltipTrigger,
+} from "@/components/shadcn/ui/tooltip"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -128,7 +128,7 @@ function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={contextValue}>
-      <TooltipProvider delayDuration={0}>
+      <ShadcnTooltipProvider delayDuration={0}>
         <div
           data-slot="sidebar-wrapper"
           style={
@@ -146,7 +146,7 @@ function SidebarProvider({
         >
           {children}
         </div>
-      </TooltipProvider>
+      </ShadcnTooltipProvider>
     </SidebarContext.Provider>
   )
 }
@@ -182,8 +182,8 @@ function Sidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
+      <ShadcnSheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+        <ShadcnSheetContent
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
@@ -195,13 +195,13 @@ function Sidebar({
           }
           side={side}
         >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
+          <ShadcnSheetHeader className="sr-only">
+            <ShadcnSheetTitle>Sidebar</ShadcnSheetTitle>
+            <ShadcnSheetDescription>Displays the mobile sidebar.</ShadcnSheetDescription>
+          </ShadcnSheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+        </ShadcnSheetContent>
+      </ShadcnSheet>
     )
   }
 
@@ -257,11 +257,11 @@ function SidebarTrigger({
   className,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof ShadcnButton>) {
   const { toggleSidebar } = useSidebar()
 
   return (
-    <Button
+    <ShadcnButton
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="ghost"
@@ -275,7 +275,7 @@ function SidebarTrigger({
     >
       <PanelLeftIcon />
       <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    </ShadcnButton>
   )
 }
 
@@ -321,9 +321,9 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
 function SidebarInput({
   className,
   ...props
-}: React.ComponentProps<typeof Input>) {
+}: React.ComponentProps<typeof ShadcnInput>) {
   return (
-    <Input
+    <ShadcnInput
       data-slot="sidebar-input"
       data-sidebar="input"
       className={cn("bg-background h-8 w-full shadow-none", className)}
@@ -357,9 +357,9 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
 function SidebarSeparator({
   className,
   ...props
-}: React.ComponentProps<typeof Separator>) {
+}: React.ComponentProps<typeof ShadcnSeparator>) {
   return (
-    <Separator
+    <ShadcnSeparator
       data-slot="sidebar-separator"
       data-sidebar="separator"
       className={cn("bg-sidebar-border mx-2 w-auto", className)}
@@ -506,7 +506,7 @@ function SidebarMenuButton({
 }: React.ComponentProps<"button"> & {
   asChild?: boolean
   isActive?: boolean
-  tooltip?: string | React.ComponentProps<typeof TooltipContent>
+  tooltip?: string | React.ComponentProps<typeof ShadcnTooltipContent>
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : "button"
   const { isMobile, state } = useSidebar()
@@ -533,15 +533,15 @@ function SidebarMenuButton({
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent
+    <ShadcnTooltip>
+      <ShadcnTooltipTrigger asChild>{button}</ShadcnTooltipTrigger>
+      <ShadcnTooltipContent
         side="right"
         align="center"
         hidden={state !== "collapsed" || isMobile}
         {...tooltip}
       />
-    </Tooltip>
+    </ShadcnTooltip>
   )
 }
 
@@ -619,12 +619,12 @@ function SidebarMenuSkeleton({
       {...props}
     >
       {showIcon && (
-        <Skeleton
+        <ShadcnSkeleton
           className="size-4 rounded-md"
           data-sidebar="menu-skeleton-icon"
         />
       )}
-      <Skeleton
+      <ShadcnSkeleton
         className="h-4 max-w-(--skeleton-width) flex-1"
         data-sidebar="menu-skeleton-text"
         style={

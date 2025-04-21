@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "@/components/shadcn/lib/utils"
 import Image from "next/image"
 
 import {
@@ -10,7 +10,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-} from "@/components/ui/sidebar"
+} from "@/components/shadcn/ui/sidebar"
 import { Separator, TitleWithSubText } from "@/components/bricks"
 import { NavItem, SidebarNavItems } from "./SidebarNavItems"
 

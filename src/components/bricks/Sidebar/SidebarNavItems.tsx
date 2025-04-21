@@ -1,8 +1,8 @@
 import React from 'react'
-import { cn } from "@/lib/utils"
+import { cn } from "@/components/shadcn/lib/utils"
 import { ChevronRight, LucideIcon } from "lucide-react"
 import Link from "next/link"
-import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar"
+import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/shadcn/ui/sidebar"
 
 export interface NavItem {
   title: string

@@ -1,8 +1,8 @@
 "use client"
 
 import React from 'react'
-import { cn } from "@/lib/utils"
-import { Separator as UISeparator } from "@/components/ui/separator"
+import { cn } from "@/components/shadcn/lib/utils"
+import { Separator as UISeparator } from "@/components/shadcn/ui/separator"
 
 export interface SeparatorProps {
   className?: string

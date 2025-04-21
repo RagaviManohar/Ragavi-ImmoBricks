@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { BricksBadge } from './index';
+import { Badge } from '@/components/bricks/Badge';
 
 const meta = {
   title: 'Bricks/Badge',
-  component: BricksBadge,
+  component: Badge,
   parameters: {
     layout: 'centered',
   },
@@ -19,7 +19,7 @@ const meta = {
       description: 'Badge content',
     },
   },
-} satisfies Meta<typeof BricksBadge>;
+} satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

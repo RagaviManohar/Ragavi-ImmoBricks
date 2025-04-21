@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { PaginationGroup } from '@/components/bricks/PaginationGroup';
 import { useState } from 'react';
+import { action } from '@storybook/addon-actions';
 
 // Wrapper component to handle state within stories
 const PaginationGroupWithState = ({
@@ -13,13 +14,24 @@ const PaginationGroupWithState = ({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
   
+  // Use action for callbacks
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    action('onPageChange')(page);
+  };
+
+  const handleItemsPerPageChange = (value: number) => {
+    setItemsPerPage(value);
+    action('onItemsPerPageChange')(value);
+  };
+
   return (
     <PaginationGroup
       currentPage={currentPage}
       totalPages={totalPages}
-      onPageChange={setCurrentPage}
+      onPageChange={handlePageChange}
       itemsPerPage={itemsPerPage}
-      onItemsPerPageChange={showItemsPerPage ? setItemsPerPage : undefined}
+      onItemsPerPageChange={showItemsPerPage ? handleItemsPerPageChange : undefined}
       itemsPerPageOptions={itemsPerPageOptions}
     />
   );

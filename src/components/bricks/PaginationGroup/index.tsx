@@ -24,23 +24,28 @@ export function PaginationGroup({
   itemsPerPageOptions = [10, 20, 50],
 }: PaginationGroupProps) {
   return (
-    <div className={cn("flex items-center justify-between w-full", className)}>
+    <div
+      className={cn(
+        "w-full flex items-center justify-between gap-10",
+        className
+      )}
+    >
       {/* Left side - Page indicator */}
-      <div className="flex items-center py-1.5">
-        <Text 
-          text={`Page ${currentPage} of ${totalPages}`}
-          size="sm"
-          weight="normal"
-          color="gray"
+      <Text
+        text={`Page ${currentPage} of ${totalPages}`}
+        size="sm"
+        weight="normal"
+        color="gray"
+        className="whitespace-nowrap"
+      />
+      {/* Center - Pagination controls with flex-grow */}
+      <div className="flex-grow">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
         />
       </div>
-
-      {/* Center - Pagination controls */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={onPageChange}
-      />
 
       {/* Right side - Items per page dropdown */}
       {onItemsPerPageChange && (

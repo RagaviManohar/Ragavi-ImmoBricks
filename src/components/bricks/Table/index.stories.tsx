@@ -4,14 +4,14 @@ import { Table, BricksColumnDef } from "@/components/bricks/Table";
 import { Badge } from "@/components/bricks/Badge";
 import { Text } from "@/components/bricks/Text";
 import { MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/shadcn/ui/button";
+import { Button as ShadcnButton } from "@/components/shadcn/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu as ShadcnDropdownMenu,
+  DropdownMenuContent as ShadcnDropdownMenuContent,
+  DropdownMenuItem as ShadcnDropdownMenuItem,
+  DropdownMenuLabel as ShadcnDropdownMenuLabel,
+  DropdownMenuSeparator as ShadcnDropdownMenuSeparator,
+  DropdownMenuTrigger as ShadcnDropdownMenuTrigger,
 } from "@/components/shadcn/ui/dropdown-menu";
 import { Row } from "@tanstack/react-table";
 
@@ -214,25 +214,25 @@ const actionsColumn: BricksColumnDef<Lead> = {
     const lead = row.original;
 
     return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+      <ShadcnDropdownMenu>
+        <ShadcnDropdownMenuTrigger asChild>
+          <ShadcnButton variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+          </ShadcnButton>
+        </ShadcnDropdownMenuTrigger>
+        <ShadcnDropdownMenuContent align="end">
+          <ShadcnDropdownMenuLabel>Actions</ShadcnDropdownMenuLabel>
+          <ShadcnDropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={() => action("View lead")(lead)}>
+          <ShadcnDropdownMenuItem onClick={() => action("View lead")(lead)}>
             View lead
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => action("View lead details")(lead)}>
+          </ShadcnDropdownMenuItem>
+          <ShadcnDropdownMenuItem onClick={() => action("View lead details")(lead)}>
             View lead details
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </ShadcnDropdownMenuItem>
+        </ShadcnDropdownMenuContent>
+      </ShadcnDropdownMenu>
     );
   },
 };

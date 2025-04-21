@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/components/shadcn/lib/utils";
 
-import { Checkbox } from "@/components/shadcn/ui/checkbox";
+import { Checkbox as ShadcnCheckbox } from "@/components/shadcn/ui/checkbox";
 import {
   Table as ShadcnTable,
   TableBody as ShadcnTableBody,
@@ -97,7 +97,7 @@ export function Table<TData>({
     if (row) {
       // Row checkbox
       return (
-        <Checkbox
+        <ShadcnCheckbox
           className="table-checkbox cursor-pointer"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -107,7 +107,7 @@ export function Table<TData>({
     } else {
       // Header checkbox
       return (
-        <Checkbox
+        <ShadcnCheckbox
           className="table-checkbox cursor-pointer"
           checked={
             table.getIsAllPageRowsSelected() ||

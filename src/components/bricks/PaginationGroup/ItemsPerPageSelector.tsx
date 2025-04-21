@@ -2,11 +2,11 @@ import * as React from "react";
 import { cn } from "@/components/shadcn/lib/utils";
 import { Text } from "@/components/bricks/Text";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select as ShadcnSelect,
+  SelectContent as ShadcnSelectContent,
+  SelectItem as ShadcnSelectItem,
+  SelectTrigger as ShadcnSelectTrigger,
+  SelectValue as ShadcnSelectValue,
 } from "@/components/shadcn/ui/select";
 
 interface ItemsPerPageSelectorProps {
@@ -21,12 +21,12 @@ export function ItemsPerPageSelector({
   onItemsPerPageChange,
 }: ItemsPerPageSelectorProps) {
   return (
-    <Select
+    <ShadcnSelect
       value={itemsPerPage.toString()}
       onValueChange={(value: string) => onItemsPerPageChange(parseInt(value, 10))}
     >
-      <SelectTrigger className="h-[32px] w-full px-2.5 py-1.5 bg-neutral-0 border border-neutral-200 rounded-lg text-[14px] font-normal shadow-[0px_1px_2px_0px_rgba(10,13,20,0.03)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-neutral-200">
-        <SelectValue>
+      <ShadcnSelectTrigger className="h-[32px] w-full px-2.5 py-1.5 bg-neutral-0 border border-neutral-200 rounded-lg text-[14px] font-normal shadow-[0px_1px_2px_0px_rgba(10,13,20,0.03)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-neutral-200">
+        <ShadcnSelectValue>
           <Text 
             text={`${itemsPerPage} / page`} 
             size="sm" 
@@ -34,11 +34,11 @@ export function ItemsPerPageSelector({
             color="gray" 
             className="truncate pr-1"
           />
-        </SelectValue>
-      </SelectTrigger>
-      <SelectContent className="bg-neutral-0 border border-neutral-200 rounded-lg shadow-md z-10">
+        </ShadcnSelectValue>
+      </ShadcnSelectTrigger>
+      <ShadcnSelectContent className="bg-neutral-0 border border-neutral-200 rounded-lg shadow-md z-10">
         {itemsPerPageOptions.map((option) => (
-          <SelectItem
+          <ShadcnSelectItem
             key={option}
             value={option.toString()}
             className={cn(
@@ -52,9 +52,9 @@ export function ItemsPerPageSelector({
               weight="normal" 
               color="gray"
             />
-          </SelectItem>
+          </ShadcnSelectItem>
         ))}
-      </SelectContent>
-    </Select>
+      </ShadcnSelectContent>
+    </ShadcnSelect>
   );
 }

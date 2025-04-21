@@ -7,11 +7,11 @@ import {
 } from "lucide-react";
 import { cn } from "@/components/shadcn/lib/utils";
 import {
-  Pagination as BasePagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationEllipsis,
+  Pagination as ShadcnPagination,
+  PaginationContent as ShadcnPaginationContent,
+  PaginationItem as ShadcnPaginationItem,
+  PaginationLink as ShadcnPaginationLink,
+  PaginationEllipsis as ShadcnPaginationEllipsis,
 } from "@/components/shadcn/ui/pagination";
 
 interface PaginationProps {
@@ -43,8 +43,8 @@ const NavigationButton = ({
   const isButtonDisabled = disabled || isDisabled;
 
   return (
-    <PaginationItem>
-      <PaginationLink
+    <ShadcnPaginationItem>
+      <ShadcnPaginationLink
         className={className}
         onClick={() => !disabled && onClick()}
         aria-label={ariaLabel}
@@ -56,8 +56,8 @@ const NavigationButton = ({
         }}
       >
         {icon}
-      </PaginationLink>
-    </PaginationItem>
+      </ShadcnPaginationLink>
+    </ShadcnPaginationItem>
   );
 };
 
@@ -118,8 +118,8 @@ export function Pagination({
   }`;
 
   return (
-    <BasePagination className="mx-0 flex items-center justify-center">
-      <PaginationContent className="flex flex-row items-center gap-2">
+    <ShadcnPagination className="mx-0 flex items-center justify-center">
+      <ShadcnPaginationContent className="flex flex-row items-center gap-2">
         {/* First page button */}
         <NavigationButton
           icon={<ChevronsLeft size={16} />}
@@ -144,15 +144,15 @@ export function Pagination({
         {getPageNumbers(currentPage, totalPages).map((page, index) => {
           if (page === "ellipsis-start" || page === "ellipsis-end") {
             return (
-              <PaginationItem key={`ellipsis-${index}`}>
-                <PaginationEllipsis className="flex items-center justify-center w-[32px] h-[32px] p-1.5 text-[14px] font-medium text-neutral-600" />
-              </PaginationItem>
+              <ShadcnPaginationItem key={`ellipsis-${index}`}>
+                <ShadcnPaginationEllipsis className="flex items-center justify-center w-[32px] h-[32px] p-1.5 text-[14px] font-medium text-neutral-600" />
+              </ShadcnPaginationItem>
             );
           }
 
           return (
-            <PaginationItem key={index}>
-              <PaginationLink
+            <ShadcnPaginationItem key={index}>
+              <ShadcnPaginationLink
                 isActive={currentPage === page}
                 className={cn(
                   "flex items-center justify-center w-[32px] h-[32px] p-1.5 rounded-lg text-[14px] font-medium text-neutral-600 border",
@@ -168,8 +168,8 @@ export function Pagination({
                 style={disabled ? { pointerEvents: "none" } : {}}
               >
                 {page}
-              </PaginationLink>
-            </PaginationItem>
+              </ShadcnPaginationLink>
+            </ShadcnPaginationItem>
           );
         })}
 
@@ -192,7 +192,7 @@ export function Pagination({
           disabled={disabled}
           className={navigationButtonClasses}
         />
-      </PaginationContent>
-    </BasePagination>
+      </ShadcnPaginationContent>
+    </ShadcnPagination>
   );
 }

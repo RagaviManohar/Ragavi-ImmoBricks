@@ -106,7 +106,7 @@ describe('Sidebar', () => {
       <Sidebar {...defaultProps} isOpen={true} onOpenChange={onOpenChange} />
     )
     
-    const sidebar = container.querySelector('[style*="width: 300px"]')
+    const sidebar = container.querySelector('[style*="width: 275px"]')
     expect(sidebar).toBeInTheDocument()
 
     // Should not close on mouse leave when isOpen is true

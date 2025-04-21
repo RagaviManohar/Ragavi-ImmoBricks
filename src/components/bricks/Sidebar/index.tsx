@@ -98,7 +98,7 @@ export function Sidebar({
           className="border-r border-neutral-200 bg-white shadow-sm "
           variant="sidebar"
           style={{ 
-            width: open ? "17%" : "80px",
+            width: open ? "275px" : "80px",
             transition: "width 200ms ease-in-out"
           }}
         >
@@ -136,9 +136,12 @@ export function Sidebar({
           )}>
             <SidebarNavItems items={mainNavItems} open={open} />
 
+
+          {bottomNavItems && bottomNavItems.length > 0 && (
             <div className={cn("py-2", open ? "px-3" : "px-4")}>
               <Separator color="neutral-200" />
             </div>
+          )}
             
             <SidebarNavItems items={bottomNavItems} open={open} />
           </SidebarContent>
